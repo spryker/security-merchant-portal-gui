@@ -10,7 +10,9 @@ namespace SprykerTest\Zed\SecurityMerchantPortalGui\Communication\Plugin\Securit
 use Codeception\Test\Unit;
 use Generated\Shared\Transfer\MerchantTransfer;
 use Generated\Shared\Transfer\UserTransfer;
-use Spryker\Zed\SecurityMerchantPortalGui\Communication\Plugin\Security\MerchantUserSecurityPlugin;
+use ReflectionClass;
+use Spryker\Zed\Security\Communication\Configurator\SecurityConfigurator;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Plugin\Security\ZedMerchantUserSecurityPlugin;
 use SprykerTest\Zed\SecurityMerchantPortalGui\SecurityMerchantPortalGuiCommunicationTester;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,10 +25,10 @@ use Symfony\Component\HttpFoundation\Response;
  * @group Communication
  * @group Plugin
  * @group Security
- * @group MerchantUserSecurityPluginTest
+ * @group ZedMerchantUserSecurityPluginTest
  * Add your own group annotations below this line
  */
-class MerchantUserSecurityPluginTest extends Unit
+class ZedMerchantUserSecurityPluginTest extends Unit
 {
     /**
      * @uses \Spryker\Zed\Session\Communication\Plugin\Application\SessionApplicationPlugin::SERVICE_SESSION
@@ -36,8 +38,6 @@ class MerchantUserSecurityPluginTest extends Unit
     protected const SERVICE_SESSION = 'session';
 
     /**
-     * @uses \Spryker\Zed\Security\Communication\Plugin\Application\SecurityApplicationPlugin::SERVICE_SECURITY_TOKEN_STORAGE
-     *
      * @var string
      */
     protected const SERVICE_SECURITY_TOKEN_STORAGE = 'security.token_storage';
@@ -75,10 +75,14 @@ class MerchantUserSecurityPluginTest extends Unit
     {
         parent::_before();
 
-        if ($this->tester->isSymfonyVersion5() !== true) {
-            $this->markTestSkipped('Compatible only with `symfony/security-core` package version ^5.0.0. To be removed once Symfony 5 support is discontinued.');
+        if ($this->tester->isSymfonyVersion5() === true) {
+            $this->markTestSkipped('Compatible only with `symfony/security-core` package version >= 6. Will be enabled by default once Symfony 5 support is discontinued.');
         }
 
+        $securityPlugin = new ZedMerchantUserSecurityPlugin();
+        $securityPlugin->setFactory($this->tester->getFactory());
+        $this->tester->addSecurityPlugin($securityPlugin);
+        $this->tester->mockSecurityDependencies();
         $this->tester->enableSecurityApplicationPlugin();
     }
 
@@ -97,10 +101,6 @@ class MerchantUserSecurityPluginTest extends Unit
             MerchantTransfer::STATUS => static::MERCHANT_STATUS_APPROVED,
         ]);
         $this->tester->haveMerchantUser($merchantTransfer, $userTransfer);
-
-        $securityPlugin = new MerchantUserSecurityPlugin();
-        $securityPlugin->setFactory($this->tester->getFactory());
-        $this->tester->addSecurityPlugin($securityPlugin);
 
         $this->tester->addRoute('test', '/ignorable', function () {
             return new Response('test-text');
@@ -152,10 +152,6 @@ class MerchantUserSecurityPluginTest extends Unit
         ]);
         $this->tester->haveMerchantUser($merchantTransfer, $userTransfer);
 
-        $securityPlugin = new MerchantUserSecurityPlugin();
-        $securityPlugin->setFactory($this->tester->getFactory());
-        $this->tester->addSecurityPlugin($securityPlugin);
-
         $token = $container->get(static::SERVICE_SECURITY_TOKEN_STORAGE)->getToken();
         $this->assertNull($token);
 
@@ -195,10 +191,6 @@ class MerchantUserSecurityPluginTest extends Unit
             MerchantTransfer::STATUS => static::MERCHANT_STATUS_APPROVED,
         ]);
         $this->tester->haveMerchantUser($merchantTransfer, $userTransfer);
-
-        $securityPlugin = new MerchantUserSecurityPlugin();
-        $securityPlugin->setFactory($this->tester->getFactory());
-        $this->tester->addSecurityPlugin($securityPlugin);
 
         $this->tester->addRoute('test', '/ignorable', function () {
             return new Response('test-text');
@@ -244,10 +236,6 @@ class MerchantUserSecurityPluginTest extends Unit
         ]);
         $merchantUserTransfer = $this->tester->haveMerchantUser($merchantTransfer, $userTransfer);
 
-        $securityPlugin = new MerchantUserSecurityPlugin();
-        $securityPlugin->setFactory($this->tester->getFactory());
-        $this->tester->addSecurityPlugin($securityPlugin);
-
         $token = $container->get(static::SERVICE_SECURITY_TOKEN_STORAGE)->getToken();
         $this->assertNull($token);
 
@@ -269,5 +257,18 @@ class MerchantUserSecurityPluginTest extends Unit
         // Assert
         $token = $container->get(static::SERVICE_SECURITY_TOKEN_STORAGE)->getToken();
         $this->assertNull($token);
+    }
+
+    /**
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $reflection = new ReflectionClass(SecurityConfigurator::class);
+        $property = $reflection->getProperty('securityConfiguration');
+        $property->setAccessible(true);
+        $property->setValue(null);
     }
 }
