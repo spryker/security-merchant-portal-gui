@@ -12,16 +12,14 @@ use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\UserMerchantPortalGuiExtension\Dependency\Plugin\MerchantUserPostChangePluginInterface;
 
 /**
- * @deprecated Use {@link \Spryker\Zed\SecurityMerchantPortalGui\Communication\Plugin\UserMerchantPortalGui\MerchantUserSecurityTokenUpdateMerchantUserPostChangePlugin} instead.
- *
  * @method \Spryker\Zed\SecurityMerchantPortalGui\Communication\SecurityMerchantPortalGuiCommunicationFactory getFactory()
  * @method \Spryker\Zed\SecurityMerchantPortalGui\SecurityMerchantPortalGuiConfig getConfig()
  */
-class SecurityTokenUpdateMerchantUserPostChangePlugin extends AbstractPlugin implements MerchantUserPostChangePluginInterface
+class MerchantUserSecurityTokenUpdateMerchantUserPostChangePlugin extends AbstractPlugin implements MerchantUserPostChangePluginInterface
 {
     /**
      * {@inheritDoc}
-     * - Rewrites Symfony security token.
+     * - Rewrites Symfony security token for merchant users with `MerchantUser` and without `IS_IMPERSONATOR` roles granted.
      *
      * @api
      *
@@ -31,6 +29,6 @@ class SecurityTokenUpdateMerchantUserPostChangePlugin extends AbstractPlugin imp
      */
     public function execute(MerchantUserTransfer $merchantUserTransfer): MerchantUserTransfer
     {
-        return $this->getFactory()->createSecurityTokenUpdater()->update($merchantUserTransfer);
+        return $this->getFactory()->createSecurityTokenUpdater()->updateMerchantUserToken($merchantUserTransfer);
     }
 }
