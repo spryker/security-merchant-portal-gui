@@ -8,6 +8,7 @@
 namespace Spryker\Zed\SecurityMerchantPortalGui\Communication\Authenticator;
 
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Badge\MultiFactorAuthBadge;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Exception\AccessDeniedException;
 use Spryker\Zed\SecurityMerchantPortalGui\SecurityMerchantPortalGuiConfig;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,14 +74,21 @@ class MerchantLoginFormAuthenticator implements AuthenticatorInterface, Authenti
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
+     * @throws \Symfony\Component\Security\Core\Exception\AuthenticationException
+     *
      * @return \Symfony\Component\Security\Http\Authenticator\Passport\Passport
      */
     public function authenticate(Request $request): Passport
     {
         $data = $request->request->all(static::SECURITY_MERCHANT_PORTAL_GUI_REQUEST);
 
-        /** @var \Spryker\Zed\SecurityMerchantPortalGui\Communication\Security\MerchantUserInterface $user */
-        $user = $this->userProvider->loadUserByIdentifier($data[static::USERNAME]);
+        try {
+            /** @var \Spryker\Zed\SecurityMerchantPortalGui\Communication\Security\MerchantUserInterface $user */
+            $user = $this->userProvider->loadUserByIdentifier($data[static::USERNAME]);
+            // @phpstan-ignore-next-line
+        } catch (AccessDeniedException $e) {
+            throw new AuthenticationException();
+        }
         $badges = [$this->multiFactorAuthBadge->enable($user->getMerchantUserTransfer()->getUserOrFail())];
 
         return new Passport(
