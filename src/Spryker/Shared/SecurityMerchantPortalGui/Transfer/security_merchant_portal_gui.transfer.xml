@@ -61,6 +61,7 @@
 
     <transfer name="MultiFactorAuthValidationRequest" strict="true">
         <property name="user" type="User"/>
+        <property name="isLogin" type="bool"/>
     </transfer>
 
     <transfer name="ZedUiFormResponse" strict="true">
@@ -70,6 +71,10 @@
         <property name="url" type="string"/>
         <property name="isLogin" type="bool"/>
         <property name="formSelector" type="string"/>
+    </transfer>
+
+    <transfer name="MultiFactorAuth" strict="true">
+        <property name="user" type="User"/>
     </transfer>
 
 </transfers>

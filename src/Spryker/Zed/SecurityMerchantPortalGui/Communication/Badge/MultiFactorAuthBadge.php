@@ -7,8 +7,10 @@
 
 namespace Spryker\Zed\SecurityMerchantPortalGui\Communication\Badge;
 
+use Generated\Shared\Transfer\MultiFactorAuthTransfer;
 use Generated\Shared\Transfer\MultiFactorAuthValidationRequestTransfer;
 use Generated\Shared\Transfer\UserTransfer;
+use Spryker\Zed\SecurityMerchantPortalGuiExtension\Dependency\Plugin\AuthenticationCodeInvalidatorPluginInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\BadgeInterface;
 
 class MultiFactorAuthBadge implements BadgeInterface
@@ -109,8 +111,17 @@ class MultiFactorAuthBadge implements BadgeInterface
                 continue;
             }
 
-            $multiFactorAuthValidationRequestTransfer = (new MultiFactorAuthValidationRequestTransfer())->setUser($userTransfer);
+            $multiFactorAuthValidationRequestTransfer = (new MultiFactorAuthValidationRequestTransfer())
+                ->setUser($userTransfer)
+                ->setIsLogin(true);
             $multiFactorAuthValidationResponseTransfer = $plugin->validateMerchantUserMultiFactorStatus($multiFactorAuthValidationRequestTransfer);
+
+            if ($multiFactorAuthValidationResponseTransfer->getIsRequired() === true) {
+                if ($plugin instanceof AuthenticationCodeInvalidatorPluginInterface) {
+                    $multiFactorAuthTransfer = (new MultiFactorAuthTransfer())->setUser($userTransfer);
+                    $plugin->invalidateMerchantUserCodes($multiFactorAuthTransfer);
+                }
+            }
 
             $this->setIsRequired($multiFactorAuthValidationResponseTransfer->getIsRequiredOrFail());
             $this->setStatus($multiFactorAuthValidationResponseTransfer->getStatus());
