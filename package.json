@@ -3,19 +3,19 @@
     "version": "0.0.1",
     "private": true,
     "peerDependencies": {
-        "@angular/animations": ">=17.3.0 <19.0.0",
-        "@angular/cdk": ">=17.3.0 <19.0.0",
-        "@angular/common": ">=17.3.0 <19.0.0",
-        "@angular/core": ">=17.3.0 <19.0.0",
-        "@angular/elements": ">=17.3.0 <19.0.0",
-        "@angular/platform-browser": ">=17.3.0 <19.0.0",
-        "rxjs": "~7.8.1"
+        "@angular/animations": ">=20.3.0 <21.0.0",
+        "@angular/cdk": ">=20.3.0 <21.0.0",
+        "@angular/common": ">=20.3.0 <21.0.0",
+        "@angular/core": ">=20.3.0 <21.0.0",
+        "@angular/elements": ">=20.3.0 <21.0.0",
+        "@angular/platform-browser": ">=20.3.0 <21.0.0",
+        "rxjs": ">=7.8.0 <8.0.0"
     },
     "dependencies": {
-        "@spryker/button": "^2.0.9",
-        "@spryker/card": "^2.0.2",
-        "@spryker/logo": "^2.0.2",
-        "@spryker/styles": "^2.0.11",
-        "@spryker/web-components": "^2.0.9"
+        "@spryker/button": "^3.0.1",
+        "@spryker/card": "^3.0.1",
+        "@spryker/logo": "^3.0.1",
+        "@spryker/styles": "^3.0.1",
+        "@spryker/web-components": "^3.0.1"
     }
 }
