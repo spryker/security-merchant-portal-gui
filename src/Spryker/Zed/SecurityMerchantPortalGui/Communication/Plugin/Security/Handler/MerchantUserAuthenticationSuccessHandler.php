@@ -84,11 +84,6 @@ class MerchantUserAuthenticationSuccessHandler extends AbstractPlugin implements
         return new RedirectResponse($this->getTargetUrl($request));
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\MerchantUserTransfer $merchantUserTransfer
-     *
-     * @return void
-     */
     public function executeOnAuthenticationSuccess(MerchantUserTransfer $merchantUserTransfer): void
     {
         $this->getFactory()->getMerchantUserFacade()->authorizeMerchantUser($merchantUserTransfer);
@@ -96,21 +91,11 @@ class MerchantUserAuthenticationSuccessHandler extends AbstractPlugin implements
         $this->getFactory()->createAuditLogger()->addSuccessfulLoginAuditLog();
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return string
-     */
     protected function getTargetUrl(Request $request): string
     {
         return $this->getTargetPath($request->getSession(), static::SECURITY_FIREWALL_NAME) ?? $this->getConfig()->getDefaultTargetPath();
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
     protected function createOpenModalResponse(Request $request): JsonResponse
     {
         /** @var string|null $formSelector */
@@ -129,11 +114,6 @@ class MerchantUserAuthenticationSuccessHandler extends AbstractPlugin implements
             ->toArray());
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
     protected function createRedirectResponse(Request $request): JsonResponse
     {
         return new JsonResponse($this->getFactory()
@@ -144,9 +124,6 @@ class MerchantUserAuthenticationSuccessHandler extends AbstractPlugin implements
             ->toArray());
     }
 
-    /**
-     * @return string
-     */
     protected function generateRoute(): string
     {
         $router = $this->getFactory()->getRouterFacade()->getMerchantPortalChainRouter();

@@ -62,11 +62,6 @@ class PasswordController extends AbstractController
      */
     protected const BLOCKER_IDENTIFIER = 'password-reset';
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return void
-     */
     protected function incrementPasswordResetBlocker(Request $request): void
     {
         $config = $this->getFactory()->getConfig();
@@ -85,11 +80,6 @@ class PasswordController extends AbstractController
             ->incrementLoginAttemptCount($securityCheckAuthContextTransfer);
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return bool
-     */
     protected function isPasswordResetBlocked(Request $request): bool
     {
         $config = $this->getFactory()->getConfig();
@@ -210,11 +200,6 @@ class PasswordController extends AbstractController
         ]);
     }
 
-    /**
-     * @param string|null $token
-     *
-     * @return bool
-     */
     protected function isValidToken(?string $token): bool
     {
         if (!$token) {

@@ -72,11 +72,6 @@ class MerchantUserSecurityPlugin extends AbstractPlugin implements SecurityPlugi
         return $securityBuilder;
     }
 
-    /**
-     * @param \Spryker\Shared\SecurityExtension\Configuration\SecurityBuilderInterface $securityBuilder
-     *
-     * @return \Spryker\Shared\SecurityExtension\Configuration\SecurityBuilderInterface
-     */
     protected function addFirewall(SecurityBuilderInterface $securityBuilder): SecurityBuilderInterface
     {
         $securityBuilder->addFirewall(static::SECURITY_FIREWALL_NAME, [
@@ -105,11 +100,6 @@ class MerchantUserSecurityPlugin extends AbstractPlugin implements SecurityPlugi
         return $securityBuilder;
     }
 
-    /**
-     * @param \Spryker\Shared\SecurityExtension\Configuration\SecurityBuilderInterface $securityBuilder
-     *
-     * @return \Spryker\Shared\SecurityExtension\Configuration\SecurityBuilderInterface
-     */
     protected function addAccessRules(SecurityBuilderInterface $securityBuilder): SecurityBuilderInterface
     {
         $securityBuilder->addAccessRules([
@@ -126,11 +116,6 @@ class MerchantUserSecurityPlugin extends AbstractPlugin implements SecurityPlugi
         return $securityBuilder;
     }
 
-    /**
-     * @param \Spryker\Shared\SecurityExtension\Configuration\SecurityBuilderInterface $securityBuilder
-     *
-     * @return \Spryker\Shared\SecurityExtension\Configuration\SecurityBuilderInterface
-     */
     protected function addAuthenticationSuccessHandler(SecurityBuilderInterface $securityBuilder): SecurityBuilderInterface
     {
         $securityBuilder->addAuthenticationSuccessHandler(static::SECURITY_FIREWALL_NAME, function () {
@@ -140,11 +125,6 @@ class MerchantUserSecurityPlugin extends AbstractPlugin implements SecurityPlugi
         return $securityBuilder;
     }
 
-    /**
-     * @param \Spryker\Shared\SecurityExtension\Configuration\SecurityBuilderInterface $securityBuilder
-     *
-     * @return \Spryker\Shared\SecurityExtension\Configuration\SecurityBuilderInterface
-     */
     protected function addAuthenticationFailureHandler(SecurityBuilderInterface $securityBuilder): SecurityBuilderInterface
     {
         $securityBuilder->addAuthenticationFailureHandler(static::SECURITY_FIREWALL_NAME, function (ContainerInterface $container) {

@@ -12,17 +12,7 @@ use Generated\Shared\Transfer\SecurityCheckAuthResponseTransfer;
 
 interface SecurityMerchantPortalGuiToSecurityBlockerClientInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\SecurityCheckAuthContextTransfer $securityCheckAuthContextTransfer
-     *
-     * @return \Generated\Shared\Transfer\SecurityCheckAuthResponseTransfer
-     */
     public function incrementLoginAttemptCount(SecurityCheckAuthContextTransfer $securityCheckAuthContextTransfer): SecurityCheckAuthResponseTransfer;
 
-    /**
-     * @param \Generated\Shared\Transfer\SecurityCheckAuthContextTransfer $securityCheckAuthContextTransfer
-     *
-     * @return \Generated\Shared\Transfer\SecurityCheckAuthResponseTransfer
-     */
     public function isAccountBlocked(SecurityCheckAuthContextTransfer $securityCheckAuthContextTransfer): SecurityCheckAuthResponseTransfer;
 }

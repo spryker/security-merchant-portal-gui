@@ -11,11 +11,6 @@ use Generated\Shared\Transfer\MerchantUserTransfer;
 
 interface SecurityTokenUpdaterInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\MerchantUserTransfer $merchantUserTransfer
-     *
-     * @return \Generated\Shared\Transfer\MerchantUserTransfer
-     */
     public function updateMerchantUserToken(MerchantUserTransfer $merchantUserTransfer): MerchantUserTransfer;
 
     /**

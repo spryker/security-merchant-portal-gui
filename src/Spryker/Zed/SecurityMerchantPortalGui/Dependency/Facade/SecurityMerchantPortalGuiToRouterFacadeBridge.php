@@ -24,9 +24,6 @@ class SecurityMerchantPortalGuiToRouterFacadeBridge implements SecurityMerchantP
         $this->routerFacade = $routerFacade;
     }
 
-    /**
-     * @return \Spryker\Zed\Router\Business\Router\ChainRouter
-     */
     public function getMerchantPortalChainRouter(): ChainRouter
     {
         return $this->routerFacade->getMerchantPortalChainRouter();

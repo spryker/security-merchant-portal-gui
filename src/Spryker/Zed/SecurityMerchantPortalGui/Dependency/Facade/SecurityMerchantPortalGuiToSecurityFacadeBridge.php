@@ -22,9 +22,6 @@ class SecurityMerchantPortalGuiToSecurityFacadeBridge implements SecurityMerchan
         $this->securityFacade = $securityFacade;
     }
 
-    /**
-     * @return bool
-     */
     public function isUserLoggedIn(): bool
     {
         return $this->securityFacade->isUserLoggedIn();

@@ -56,9 +56,6 @@ class OptionsBuilder implements OptionsBuilderInterface
      */
     protected UserProviderInterface $userProvider;
 
-    /**
-     * @param \Symfony\Component\Security\Core\User\UserProviderInterface $userProvider
-     */
     public function __construct(UserProviderInterface $userProvider)
     {
         $this->userProvider = $userProvider;
@@ -95,9 +92,6 @@ class OptionsBuilder implements OptionsBuilderInterface
         ];
     }
 
-    /**
-     * @return string
-     */
     protected function getMerchantPortalRoutePattern(): string
     {
         if (APPLICATION == static::APPLICATION_MERCHANT_PORTAL) {

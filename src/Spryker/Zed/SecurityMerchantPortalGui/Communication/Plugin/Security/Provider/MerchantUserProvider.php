@@ -52,11 +52,6 @@ class MerchantUserProvider extends AbstractPlugin implements UserProviderInterfa
         $this->merchantUserCriteriaExpanderPlugins = $merchantUserCriteriaExpanderPlugins;
     }
 
-    /**
-     * @param string $username
-     *
-     * @return \Symfony\Component\Security\Core\User\UserInterface
-     */
     public function loadUserByUsername(string $username): UserInterface
     {
         return $this->loadUserByIdentifier($username);
@@ -111,21 +106,11 @@ class MerchantUserProvider extends AbstractPlugin implements UserProviderInterfa
         return $this->getFactory()->createSecurityUser($merchantUserTransfer);
     }
 
-    /**
-     * @param string $class
-     *
-     * @return bool
-     */
     public function supportsClass(string $class): bool
     {
         return is_a($class, MerchantUser::class, true);
     }
 
-    /**
-     * @param string $username
-     *
-     * @return \Generated\Shared\Transfer\MerchantUserTransfer|null
-     */
     protected function findMerchantUser(string $username): ?MerchantUserTransfer
     {
         $merchantUserCriteriaTransfer = (new MerchantUserCriteriaTransfer())
@@ -139,9 +124,6 @@ class MerchantUserProvider extends AbstractPlugin implements UserProviderInterfa
         return $this->getFactory()->getMerchantUserFacade()->findMerchantUser($merchantUserCriteriaTransfer);
     }
 
-    /**
-     * @return \Symfony\Component\Security\Core\Exception\AuthenticationException
-     */
     protected function getUserNotFoundException(): AuthenticationException
     {
         if ($this->isSymfonyVersion5() === true) {
@@ -162,11 +144,6 @@ class MerchantUserProvider extends AbstractPlugin implements UserProviderInterfa
         return class_exists(AuthenticationProviderManager::class);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\MerchantUserCriteriaTransfer $merchantUserCriteriaTransfer
-     *
-     * @return \Generated\Shared\Transfer\MerchantUserCriteriaTransfer
-     */
     protected function executeMerchantUserCriteriaExpanderPlugins(
         MerchantUserCriteriaTransfer $merchantUserCriteriaTransfer
     ): MerchantUserCriteriaTransfer {

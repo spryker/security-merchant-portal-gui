@@ -68,9 +68,6 @@ class MerchantResetPasswordForm extends AbstractType
         $this->addPasswordField($builder);
     }
 
-    /**
-     * @return string
-     */
     public function getBlockPrefix(): string
     {
         return static::BLOCK_PREFIX;

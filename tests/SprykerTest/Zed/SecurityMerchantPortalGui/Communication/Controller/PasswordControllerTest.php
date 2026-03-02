@@ -33,9 +33,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class PasswordControllerTest extends Unit
 {
-    /**
-     * @return void
-     */
     public function testResetRequestActionAddsPasswordResetRequestedAuditLog(): void
     {
         // Arrange
@@ -45,9 +42,6 @@ class PasswordControllerTest extends Unit
         $passwordResetController->resetRequestAction(new Request());
     }
 
-    /**
-     * @return void
-     */
     public function testResetActionAddsPasswordUpdatedAfterResetAuditLog(): void
     {
         // Arrange

@@ -47,9 +47,6 @@ class MerchantUserProviderTest extends Unit
      */
     protected SecurityMerchantPortalGuiCommunicationTester $tester;
 
-    /**
-     * @return void
-     */
     public function testLoadUserByUsernameThrowsExceptionWhenLoginIsRestrictedByMerchantUserLoginRestrictionPlugin(): void
     {
         // Arrange
@@ -78,9 +75,6 @@ class MerchantUserProviderTest extends Unit
         );
     }
 
-    /**
-     * @return void
-     */
     public function testLoadUserByUsernameDoesNotThrowExceptionWhenLoginIsNotRestrictedByMerchantUserLoginRestrictionPlugin(): void
     {
         // Arrange

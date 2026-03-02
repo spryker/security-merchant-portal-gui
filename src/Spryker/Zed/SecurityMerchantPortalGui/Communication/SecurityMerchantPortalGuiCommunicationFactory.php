@@ -51,9 +51,6 @@ use Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface;
  */
 class SecurityMerchantPortalGuiCommunicationFactory extends AbstractCommunicationFactory
 {
-    /**
-     * @return \Symfony\Component\Security\Core\User\UserProviderInterface
-     */
     public function createMerchantUserProvider(): UserProviderInterface
     {
         return new MerchantUserProvider(
@@ -86,11 +83,6 @@ class SecurityMerchantPortalGuiCommunicationFactory extends AbstractCommunicatio
         return $this->getFormFactory()->create(MerchantResetPasswordForm::class);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\MerchantUserTransfer $merchantUserTransfer
-     *
-     * @return \Spryker\Zed\SecurityMerchantPortalGui\Communication\Security\MerchantUserInterface
-     */
     public function createSecurityUser(MerchantUserTransfer $merchantUserTransfer): MerchantUserInterface
     {
         return new MerchantUser(
@@ -99,25 +91,16 @@ class SecurityMerchantPortalGuiCommunicationFactory extends AbstractCommunicatio
         );
     }
 
-    /**
-     * @return \Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface
-     */
     public function createMerchantUserAuthenticationSuccessHandler(): AuthenticationSuccessHandlerInterface
     {
         return new MerchantUserAuthenticationSuccessHandler();
     }
 
-    /**
-     * @return \Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface
-     */
     public function createMerchantUserAuthenticationFailureHandler(): AuthenticationFailureHandlerInterface
     {
         return new MerchantUserAuthenticationFailureHandler();
     }
 
-    /**
-     * @return \Spryker\Zed\SecurityMerchantPortalGui\Communication\Updater\SecurityTokenUpdaterInterface
-     */
     public function createSecurityTokenUpdater(): SecurityTokenUpdaterInterface
     {
         return new SecurityTokenUpdater(
@@ -126,49 +109,31 @@ class SecurityMerchantPortalGuiCommunicationFactory extends AbstractCommunicatio
         );
     }
 
-    /**
-     * @return \Spryker\Zed\SecurityMerchantPortalGui\Communication\Logger\AuditLoggerInterface
-     */
     public function createAuditLogger(): AuditLoggerInterface
     {
         return new AuditLogger();
     }
 
-    /**
-     * @return \Spryker\Zed\SecurityMerchantPortalGui\Dependency\Facade\SecurityMerchantPortalGuiToMerchantUserFacadeInterface
-     */
     public function getMerchantUserFacade(): SecurityMerchantPortalGuiToMerchantUserFacadeInterface
     {
         return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::FACADE_MERCHANT_USER);
     }
 
-    /**
-     * @return \Spryker\Zed\SecurityMerchantPortalGui\Dependency\Facade\SecurityMerchantPortalGuiToMessengerFacadeInterface
-     */
     public function getMessengerFacade(): SecurityMerchantPortalGuiToMessengerFacadeInterface
     {
         return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::FACADE_MESSENGER);
     }
 
-    /**
-     * @return \Spryker\Zed\SecurityMerchantPortalGui\Dependency\Facade\SecurityMerchantPortalGuiToSecurityFacadeInterface
-     */
     public function getSecurityFacade(): SecurityMerchantPortalGuiToSecurityFacadeInterface
     {
         return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::FACADE_SECURITY);
     }
 
-    /**
-     * @return \Spryker\Zed\SecurityMerchantPortalGui\Dependency\Facade\SecurityMerchantPortalGuiToRouterFacadeInterface
-     */
     public function getRouterFacade(): SecurityMerchantPortalGuiToRouterFacadeInterface
     {
         return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::FACADE_ROUTER);
     }
 
-    /**
-     * @return \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface
-     */
     public function getTokenStorageService(): TokenStorageInterface
     {
         return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::SERVICE_SECURITY_TOKEN_STORAGE);
@@ -190,9 +155,6 @@ class SecurityMerchantPortalGuiCommunicationFactory extends AbstractCommunicatio
         return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::PLUGINS_MERCHANT_USER_CRITERIA_EXPANDER_PLUGIN);
     }
 
-    /**
-     * @return \Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface
-     */
     public function createMechantLoginFormAuthenticator(): AuthenticatorInterface
     {
         return new MerchantLoginFormAuthenticator(
@@ -204,9 +166,6 @@ class SecurityMerchantPortalGuiCommunicationFactory extends AbstractCommunicatio
         );
     }
 
-    /**
-     * @return \Spryker\Zed\SecurityMerchantPortalGui\Communication\Expander\SecurityBuilderExpanderInterface
-     */
     public function createSecurityBuilderExpander(): SecurityBuilderExpanderInterface
     {
         if (class_exists(AuthenticationProviderManager::class) === true) {
@@ -220,9 +179,6 @@ class SecurityMerchantPortalGuiCommunicationFactory extends AbstractCommunicatio
         );
     }
 
-    /**
-     * @return \Spryker\Zed\SecurityMerchantPortalGui\Communication\Builder\OptionsBuilderInterface
-     */
     public function createOptionsBuilder(): OptionsBuilderInterface
     {
         return new OptionsBuilder(
@@ -230,25 +186,16 @@ class SecurityMerchantPortalGuiCommunicationFactory extends AbstractCommunicatio
         );
     }
 
-    /**
-     * @return \Spryker\Zed\SecurityMerchantPortalGui\Dependency\Client\SecurityMerchantPortalGuiToSecurityBlockerClientInterface
-     */
     public function getSecurityBlockerClient(): SecurityMerchantPortalGuiToSecurityBlockerClientInterface
     {
         return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::CLIENT_SECURITY_BLOCKER);
     }
 
-    /**
-     * @return \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface
-     */
     public function getAuthorizationCheckerService(): AuthorizationCheckerInterface
     {
         return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::SERVICE_SECURITY_AUTHORIZATION_CHECKER);
     }
 
-    /**
-     * @return \Spryker\Zed\SecurityMerchantPortalGui\Communication\Badge\MultiFactorAuthBadge
-     */
     public function createMultiFactorAuthBadge(): MultiFactorAuthBadge
     {
         return new MultiFactorAuthBadge($this->getMerchantUserMultiFactorAuthenticationHandlerPlugins());
@@ -262,17 +209,11 @@ class SecurityMerchantPortalGuiCommunicationFactory extends AbstractCommunicatio
         return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::PLUGINS_MERCHANT_USER_AUTHENTICATION_HANDLER);
     }
 
-    /**
-     * @return \Spryker\Zed\SecurityMerchantPortalGui\Dependency\Client\SecurityMerchantPortalGuiToSessionClientInterface
-     */
     public function getSessionClient(): SecurityMerchantPortalGuiToSessionClientInterface
     {
         return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::CLIENT_SESSION);
     }
 
-    /**
-     * @return \Spryker\Shared\ZedUi\ZedUiFactoryInterface
-     */
     public function getZedUiFactory(): ZedUiFactoryInterface
     {
         return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::SERVICE_ZED_UI_FACTORY);

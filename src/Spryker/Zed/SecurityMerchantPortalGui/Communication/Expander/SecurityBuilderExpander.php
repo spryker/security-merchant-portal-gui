@@ -55,11 +55,6 @@ class SecurityBuilderExpander implements SecurityBuilderExpanderInterface
      */
     protected SecurityMerchantPortalGuiConfig $config;
 
-    /**
-     * @param \Spryker\Zed\SecurityMerchantPortalGui\Communication\Builder\OptionsBuilderInterface $optionsBuilder
-     * @param \Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface $authenticator
-     * @param \Spryker\Zed\SecurityMerchantPortalGui\SecurityMerchantPortalGuiConfig $config
-     */
     public function __construct(
         OptionsBuilderInterface $optionsBuilder,
         AuthenticatorInterface $authenticator,
@@ -70,12 +65,6 @@ class SecurityBuilderExpander implements SecurityBuilderExpanderInterface
         $this->config = $config;
     }
 
-    /**
-     * @param \Spryker\Shared\SecurityExtension\Configuration\SecurityBuilderInterface $securityBuilder
-     * @param \Spryker\Service\Container\ContainerInterface $container
-     *
-     * @return \Spryker\Shared\SecurityExtension\Configuration\SecurityBuilderInterface
-     */
     public function extend(SecurityBuilderInterface $securityBuilder, ContainerInterface $container): SecurityBuilderInterface
     {
         $securityBuilder = $this->addFirewalls($securityBuilder);
@@ -85,11 +74,6 @@ class SecurityBuilderExpander implements SecurityBuilderExpanderInterface
         return $securityBuilder;
     }
 
-    /**
-     * @param \Spryker\Shared\SecurityExtension\Configuration\SecurityBuilderInterface $securityBuilder
-     *
-     * @return \Spryker\Shared\SecurityExtension\Configuration\SecurityBuilderInterface
-     */
     protected function addFirewalls(SecurityBuilderInterface $securityBuilder): SecurityBuilderInterface
     {
         return $securityBuilder->addFirewall(
@@ -98,11 +82,6 @@ class SecurityBuilderExpander implements SecurityBuilderExpanderInterface
         );
     }
 
-    /**
-     * @param \Spryker\Shared\SecurityExtension\Configuration\SecurityBuilderInterface $securityBuilder
-     *
-     * @return \Spryker\Shared\SecurityExtension\Configuration\SecurityBuilderInterface
-     */
     protected function addAccessRules(SecurityBuilderInterface $securityBuilder): SecurityBuilderInterface
     {
         return $securityBuilder->addAccessRules([
@@ -121,11 +100,6 @@ class SecurityBuilderExpander implements SecurityBuilderExpanderInterface
         ]);
     }
 
-    /**
-     * @param \Spryker\Service\Container\ContainerInterface $container
-     *
-     * @return void
-     */
     protected function addAuthenticator(ContainerInterface $container): void
     {
         $container->set(static::SECURITY_MERCHANT_PORTAL_LOGIN_FORM_AUTHENTICATOR, function () {
@@ -133,9 +107,6 @@ class SecurityBuilderExpander implements SecurityBuilderExpanderInterface
         });
     }
 
-    /**
-     * @return string
-     */
     protected function getMerchantPortalRoutePattern(): string
     {
         if (APPLICATION == static::APPLICATION_MERCHANT_PORTAL) {

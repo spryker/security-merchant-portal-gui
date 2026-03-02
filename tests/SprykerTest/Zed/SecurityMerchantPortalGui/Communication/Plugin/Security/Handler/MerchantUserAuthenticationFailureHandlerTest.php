@@ -26,9 +26,6 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
  */
 class MerchantUserAuthenticationFailureHandlerTest extends AbstractHandlerTest
 {
-    /**
-     * @return void
-     */
     public function testOnAuthenticationFailureAddsFailedLoginAuditLog(): void
     {
         // Arrange
@@ -38,11 +35,6 @@ class MerchantUserAuthenticationFailureHandlerTest extends AbstractHandlerTest
         $merchantUserAuthenticationFailureHandler->onAuthenticationFailure(new Request(), new AuthenticationException());
     }
 
-    /**
-     * @param string $expectedAuditLogMessage
-     *
-     * @return \Spryker\Zed\SecurityMerchantPortalGui\Communication\Plugin\Security\Handler\MerchantUserAuthenticationFailureHandler
-     */
     protected function getMerchantUserAuthenticationFailureHandler(
         string $expectedAuditLogMessage
     ): MerchantUserAuthenticationFailureHandler {

@@ -40,21 +40,12 @@ class SecurityTokenUpdater implements SecurityTokenUpdaterInterface
      */
     protected AuthorizationCheckerInterface $authorizationChecker;
 
-    /**
-     * @param \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface $tokenStorageService
-     * @param \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface $authorizationChecker
-     */
     public function __construct(TokenStorageInterface $tokenStorageService, AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->tokenStorageService = $tokenStorageService;
         $this->authorizationChecker = $authorizationChecker;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\MerchantUserTransfer $merchantUserTransfer
-     *
-     * @return \Generated\Shared\Transfer\MerchantUserTransfer
-     */
     public function updateMerchantUserToken(MerchantUserTransfer $merchantUserTransfer): MerchantUserTransfer
     {
         if (
@@ -79,11 +70,6 @@ class SecurityTokenUpdater implements SecurityTokenUpdaterInterface
         return $this->setToken($merchantUserTransfer);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\MerchantUserTransfer $merchantUserTransfer
-     *
-     * @return \Generated\Shared\Transfer\MerchantUserTransfer
-     */
     protected function setToken(MerchantUserTransfer $merchantUserTransfer): MerchantUserTransfer
     {
         $merchantUser = $this->createMerchantUser($merchantUserTransfer);
@@ -94,11 +80,6 @@ class SecurityTokenUpdater implements SecurityTokenUpdaterInterface
         return $merchantUserTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\MerchantUserTransfer $merchantUserTransfer
-     *
-     * @return \Spryker\Zed\SecurityMerchantPortalGui\Communication\Security\MerchantUser
-     */
     protected function createMerchantUser(MerchantUserTransfer $merchantUserTransfer): MerchantUser
     {
         return new MerchantUser(
@@ -107,11 +88,6 @@ class SecurityTokenUpdater implements SecurityTokenUpdaterInterface
         );
     }
 
-    /**
-     * @param \Spryker\Zed\SecurityMerchantPortalGui\Communication\Security\MerchantUser $merchantUser
-     *
-     * @return \Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
-     */
     protected function createNewToken(MerchantUser $merchantUser): UsernamePasswordToken
     {
         return new UsernamePasswordToken(

@@ -72,9 +72,6 @@ class MerchantResetPasswordRequestForm extends AbstractType
             ->addSubmitField($builder);
     }
 
-    /**
-     * @return string
-     */
     public function getBlockPrefix(): string
     {
         return static::BLOCK_PREFIX;

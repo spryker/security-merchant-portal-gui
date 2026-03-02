@@ -9,8 +9,5 @@ namespace Spryker\Zed\SecurityMerchantPortalGui\Dependency\Facade;
 
 interface SecurityMerchantPortalGuiToSecurityFacadeInterface
 {
-    /**
-     * @return bool
-     */
     public function isUserLoggedIn(): bool;
 }

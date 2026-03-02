@@ -22,12 +22,6 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerI
  */
 class MerchantUserAuthenticationFailureHandler extends AbstractPlugin implements AuthenticationFailureHandlerInterface
 {
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Symfony\Component\Security\Core\Exception\AuthenticationException $exception
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
         $this->getFactory()
@@ -46,9 +40,6 @@ class MerchantUserAuthenticationFailureHandler extends AbstractPlugin implements
         return new RedirectResponse($this->getConfig()->getUrlLogin());
     }
 
-    /**
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
     protected function createRedirectResponse(): JsonResponse
     {
         return new JsonResponse($this->getFactory()

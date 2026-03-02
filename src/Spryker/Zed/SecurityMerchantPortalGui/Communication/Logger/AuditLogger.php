@@ -28,33 +28,21 @@ class AuditLogger implements AuditLoggerInterface
      */
     protected const AUDIT_LOGGER_RECORD_KEY_CONTEXT_TAGS = 'tags';
 
-    /**
-     * @return void
-     */
     public function addFailedLoginAuditLog(): void
     {
         $this->addAuditLog('Failed Login', ['failed_login']);
     }
 
-    /**
-     * @return void
-     */
     public function addSuccessfulLoginAuditLog(): void
     {
         $this->addAuditLog('Successful Login', ['successful_login']);
     }
 
-    /**
-     * @return void
-     */
     public function addPasswordResetRequestedAuditLog(): void
     {
         $this->addAuditLog('Password Reset Requested', ['password_reset_requested']);
     }
 
-    /**
-     * @return void
-     */
     public function addPasswordUpdatedAfterResetAuditLog(): void
     {
         $this->addAuditLog('Password Updated after Reset', ['password_updated_after_reset']);

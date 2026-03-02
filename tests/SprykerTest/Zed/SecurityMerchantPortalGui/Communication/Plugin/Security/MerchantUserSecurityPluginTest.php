@@ -68,9 +68,6 @@ class MerchantUserSecurityPluginTest extends Unit
      */
     protected SecurityMerchantPortalGuiCommunicationTester $tester;
 
-    /**
-     * @return void
-     */
     protected function _before(): void
     {
         parent::_before();
@@ -82,9 +79,6 @@ class MerchantUserSecurityPluginTest extends Unit
         $this->tester->enableSecurityApplicationPlugin();
     }
 
-    /**
-     * @return void
-     */
     public function testUserCanLogin(): void
     {
         // Arrange
@@ -136,9 +130,6 @@ class MerchantUserSecurityPluginTest extends Unit
         $this->assertSame($userTransfer->getUsername(), $user->getUsername());
     }
 
-    /**
-     * @return void
-     */
     public function testUserWithInvalidCredentialsCanNotLogin(): void
     {
         // Arrange
@@ -179,9 +170,6 @@ class MerchantUserSecurityPluginTest extends Unit
         $this->assertNull($token);
     }
 
-    /**
-     * @return void
-     */
     public function testNonActiveUserCanNotLogin(): void
     {
         // Arrange
@@ -228,9 +216,6 @@ class MerchantUserSecurityPluginTest extends Unit
         $this->assertNull($token);
     }
 
-    /**
-     * @return void
-     */
     public function testUserWithInactiveMerchantCanNotLogin(): void
     {
         // Arrange

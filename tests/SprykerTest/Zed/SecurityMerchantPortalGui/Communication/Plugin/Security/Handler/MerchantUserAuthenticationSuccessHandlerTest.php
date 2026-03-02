@@ -31,9 +31,6 @@ use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
  */
 class MerchantUserAuthenticationSuccessHandlerTest extends AbstractHandlerTest
 {
-    /**
-     * @return void
-     */
     public function testOnAuthenticationSuccessAddsSuccessfulLoginAuditLog(): void
     {
         // Arrange
@@ -46,11 +43,6 @@ class MerchantUserAuthenticationSuccessHandlerTest extends AbstractHandlerTest
         $userAuthenticationSuccessHandler->onAuthenticationSuccess($request, $tokenMock);
     }
 
-    /**
-     * @param string $expectedAuditLogMessage
-     *
-     * @return \Spryker\Zed\SecurityMerchantPortalGui\Communication\Plugin\Security\Handler\MerchantUserAuthenticationSuccessHandler
-     */
     protected function getMerchantUserAuthenticationSuccessHandler(
         string $expectedAuditLogMessage
     ): MerchantUserAuthenticationSuccessHandler {

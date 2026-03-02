@@ -12,8 +12,5 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 interface MerchantUserInterface extends UserInterface
 {
-    /**
-     * @return \Generated\Shared\Transfer\MerchantUserTransfer
-     */
     public function getMerchantUserTransfer(): MerchantUserTransfer;
 }

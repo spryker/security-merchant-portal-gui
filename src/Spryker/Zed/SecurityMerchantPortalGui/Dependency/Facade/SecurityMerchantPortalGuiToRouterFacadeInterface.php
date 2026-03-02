@@ -11,8 +11,5 @@ use Spryker\Zed\Router\Business\Router\ChainRouter;
 
 interface SecurityMerchantPortalGuiToRouterFacadeInterface
 {
-    /**
-     * @return \Spryker\Zed\Router\Business\Router\ChainRouter
-     */
     public function getMerchantPortalChainRouter(): ChainRouter;
 }

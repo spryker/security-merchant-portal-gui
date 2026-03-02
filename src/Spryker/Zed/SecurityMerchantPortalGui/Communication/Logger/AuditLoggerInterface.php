@@ -9,23 +9,11 @@ namespace Spryker\Zed\SecurityMerchantPortalGui\Communication\Logger;
 
 interface AuditLoggerInterface
 {
-    /**
-     * @return void
-     */
     public function addFailedLoginAuditLog(): void;
 
-    /**
-     * @return void
-     */
     public function addSuccessfulLoginAuditLog(): void;
 
-    /**
-     * @return void
-     */
     public function addPasswordResetRequestedAuditLog(): void;
 
-    /**
-     * @return void
-     */
     public function addPasswordUpdatedAfterResetAuditLog(): void;
 }

@@ -55,9 +55,6 @@ class SecurityMerchantPortalGuiCommunicationTester extends Actor
         );
     }
 
-    /**
-     * @return \Generated\Shared\Transfer\GroupTransfer
-     */
     public function haveRootGroup(): GroupTransfer
     {
         $groupCriteriaTransfer = (new GroupCriteriaTransfer())->setName(static::ROOT_GROUP_NAME);
@@ -69,12 +66,6 @@ class SecurityMerchantPortalGuiCommunicationTester extends Actor
         return $this->haveGroup([GroupTransfer::NAME => static::ROOT_GROUP_NAME]);
     }
 
-    /**
-     * @param \Symfony\Component\Security\Core\User\UserProviderInterface $merchantUserProvider
-     * @param string $username
-     *
-     * @return \Symfony\Component\Security\Core\User\UserInterface
-     */
     public function getUser(UserProviderInterface $merchantUserProvider, string $username): UserInterface
     {
         if ($this->isSymfonyVersion5() === true) {

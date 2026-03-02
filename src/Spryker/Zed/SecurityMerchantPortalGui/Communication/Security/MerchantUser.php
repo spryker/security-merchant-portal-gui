@@ -54,48 +54,30 @@ class MerchantUser implements MerchantUserInterface, PasswordAuthenticatedUserIn
         return $this->roles;
     }
 
-    /**
-     * @return string|null
-     */
     public function getSalt(): ?string
     {
         return null;
     }
 
-    /**
-     * @return string
-     */
     public function getUsername(): string
     {
         return $this->username;
     }
 
-    /**
-     * @return string|null
-     */
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    /**
-     * @return string
-     */
     public function getUserIdentifier(): string
     {
         return $this->username;
     }
 
-    /**
-     * @return void
-     */
     public function eraseCredentials(): void
     {
     }
 
-    /**
-     * @return \Generated\Shared\Transfer\MerchantUserTransfer
-     */
     public function getMerchantUserTransfer(): MerchantUserTransfer
     {
         return $this->merchantUserTransfer;
