@@ -7,6 +7,7 @@
 
 namespace Spryker\Zed\SecurityMerchantPortalGui;
 
+use Spryker\Service\Http\HttpServiceInterface;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\SecurityMerchantPortalGui\Dependency\Client\SecurityMerchantPortalGuiToSecurityBlockerClientBridge;
@@ -87,6 +88,10 @@ class SecurityMerchantPortalGuiDependencyProvider extends AbstractBundleDependen
      */
     public const SERVICE_ZED_UI_FACTORY = 'SERVICE_ZED_UI_FACTORY';
 
+    public const string PLUGINS_MERCHANT_PORTAL_USER_REDIRECT_STRATEGY = 'PLUGINS_MERCHANT_PORTAL_USER_REDIRECT_STRATEGY';
+
+    public const string SERVICE_HTTP = 'SERVICE_HTTP';
+
     public function provideCommunicationLayerDependencies(Container $container): Container
     {
         $container = parent::provideCommunicationLayerDependencies($container);
@@ -103,6 +108,8 @@ class SecurityMerchantPortalGuiDependencyProvider extends AbstractBundleDependen
         $container = $this->addMerchantUserAuthenticationHandlerPlugins($container);
         $container = $this->addSessionClient($container);
         $container = $this->addZedUiFactory($container);
+        $container = $this->addMerchantPortalUserRedirectStrategyPlugins($container);
+        $container = $this->addHttpService($container);
 
         return $container;
     }
@@ -253,6 +260,32 @@ class SecurityMerchantPortalGuiDependencyProvider extends AbstractBundleDependen
     {
         $container->set(static::SERVICE_ZED_UI_FACTORY, function (Container $container) {
             return $container->getApplicationService(static::SERVICE_ZED_UI_FACTORY);
+        });
+
+        return $container;
+    }
+
+    protected function addMerchantPortalUserRedirectStrategyPlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_MERCHANT_PORTAL_USER_REDIRECT_STRATEGY, function () {
+            return $this->getMerchantPortalUserRedirectStrategyPlugins();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @return array<\Spryker\Zed\SecurityMerchantPortalGuiExtension\Dependency\Plugin\MerchantPortalUserRedirectStrategyPluginInterface>
+     */
+    protected function getMerchantPortalUserRedirectStrategyPlugins(): array
+    {
+        return [];
+    }
+
+    protected function addHttpService(Container $container): Container
+    {
+        $container->set(static::SERVICE_HTTP, function (Container $container): HttpServiceInterface {
+            return $container->getLocator()->http()->service();
         });
 
         return $container;

@@ -93,7 +93,19 @@ class MerchantUserAuthenticationSuccessHandler extends AbstractPlugin implements
 
     protected function getTargetUrl(Request $request): string
     {
-        return $this->getTargetPath($request->getSession(), static::SECURITY_FIREWALL_NAME) ?? $this->getConfig()->getDefaultTargetPath();
+        $targetPath = $this->getTargetPath($request->getSession(), static::SECURITY_FIREWALL_NAME);
+
+        if ($targetPath) {
+            return $targetPath;
+        }
+
+        $redirectUrl = $this->resolveRedirectUrl($request);
+
+        if ($redirectUrl !== null) {
+            return $redirectUrl;
+        }
+
+        return $this->getConfig()->getDefaultTargetPath();
     }
 
     protected function createOpenModalResponse(Request $request): JsonResponse
@@ -112,6 +124,19 @@ class MerchantUserAuthenticationSuccessHandler extends AbstractPlugin implements
             ->addActionOpenModal($zedUIFormRequestActionTransfer)
             ->createResponse()
             ->toArray());
+    }
+
+    protected function resolveRedirectUrl(Request $request): ?string
+    {
+        foreach ($this->getFactory()->getMerchantPortalUserRedirectStrategyPlugins() as $plugin) {
+            if (!$plugin->isApplicable($request)) {
+                continue;
+            }
+
+            return $plugin->getRedirectUrl($request);
+        }
+
+        return null;
     }
 
     protected function createRedirectResponse(Request $request): JsonResponse

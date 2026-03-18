@@ -6,6 +6,8 @@
     "require": {
         "php": ">=8.3",
         "spryker/acl-merchant-portal-extension": "^1.0.0",
+        "spryker/event-dispatcher-extension": "^1.0.0",
+        "spryker/http": "^1.16.0",
         "spryker/kernel": "^3.33.0",
         "spryker/log": "^3.17.0",
         "spryker/merchant-user": "^1.0.0",
@@ -14,7 +16,7 @@
         "spryker/security": "^1.8.0",
         "spryker/security-blocker": "^1.0.0",
         "spryker/security-extension": "^1.0.0",
-        "spryker/security-merchant-portal-gui-extension": "^1.3.0",
+        "spryker/security-merchant-portal-gui-extension": "^1.4.0",
         "spryker/session": "^4.0.0",
         "spryker/symfony": "^3.5.0",
         "spryker/transfer": "^3.27.0",
@@ -35,6 +37,9 @@
         "spryker/router": "*",
         "spryker/testify": "*",
         "spryker/user": "*"
+    },
+    "suggest": {
+        "spryker/event-dispatcher": "Required to wire the LastVisitedPageEventDispatcherPlugin into the event dispatcher stack."
     },
     "autoload": {
         "psr-4": {

@@ -7,7 +7,9 @@
 
 namespace Spryker\Zed\SecurityMerchantPortalGui;
 
+use Spryker\Shared\SecurityMerchantPortalGui\SecurityMerchantPortalGuiConstants;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
 {
@@ -15,6 +17,12 @@ class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
      * @var string
      */
     public const ROLE_MERCHANT_USER = 'ROLE_MERCHANT_USER';
+
+    public const string STORAGE_TYPE_COOKIE = 'cookie';
+
+    protected const string LAST_VISITED_PAGE_COOKIE_NAME = 'last-visited-page';
+
+    protected const string LAST_VISITED_PAGE_COOKIE_PATH = '/';
 
     /**
      * @var string
@@ -189,5 +197,88 @@ class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
     public function getMerchantPortalRoutePattern(): string
     {
         return static::MERCHANT_PORTAL_ROUTE_PATTERN;
+    }
+
+    /**
+     * Specification:
+     * - Returns the cookie name used to store the last visited page URL.
+     *
+     * @api
+     *
+     * @return string
+     */
+    public function getLastVisitedPageCookieName(): string
+    {
+        return static::LAST_VISITED_PAGE_COOKIE_NAME;
+    }
+
+    /**
+     * Specification:
+     * - Returns the cookie path for the last visited page cookie.
+     *
+     * @api
+     *
+     * @return string
+     */
+    public function getLastVisitedPageCookiePath(): string
+    {
+        return static::LAST_VISITED_PAGE_COOKIE_PATH;
+    }
+
+    /**
+     * Specification:
+     * - Returns the last visited page storage type used to select the storage strategy.
+     *
+     * @api
+     *
+     * @return string
+     */
+    public function getLastVisitedPageStorageType(): string
+    {
+        return static::STORAGE_TYPE_COOKIE;
+    }
+
+    /**
+     * Specification:
+     * - Returns the SameSite attribute for the last visited page cookie.
+     * - Defaults to 'lax'. Can be set to 'strict' for stricter cross-site protections.
+     *
+     * @api
+     *
+     * @phpstan-return ''|'lax'|'none'|'strict'
+     *
+     * @return string
+     */
+    public function getLastVisitedPageCookieSameSite(): string
+    {
+        return Cookie::SAMESITE_LAX;
+    }
+
+    /**
+     * Specification:
+     * - Returns whether the last visited page cookie should be sent over HTTPS only.
+     * - Enabled by default to prevent transmission over plain HTTP connections.
+     *
+     * @api
+     *
+     * @return bool
+     */
+    public function isLastVisitedPageCookieSecure(): bool
+    {
+        return $this->get(SecurityMerchantPortalGuiConstants::ZED_IS_SSL_ENABLED, false);
+    }
+
+    /**
+     * Specification:
+     * - Returns the expiration time for the last visited page cookie as a Unix timestamp.
+     * - Returns 0 by default, which means the cookie expires when the browser session ends.
+     *
+     * @api
+     *
+     * @return int
+     */
+    public function getLastVisitedPageCookieExpires(): int
+    {
+        return 0;
     }
 }

@@ -8,12 +8,18 @@
 namespace Spryker\Zed\SecurityMerchantPortalGui\Communication;
 
 use Generated\Shared\Transfer\MerchantUserTransfer;
+use Spryker\Service\Http\HttpServiceInterface;
+use Spryker\Shared\Kernel\StrategyResolver;
+use Spryker\Shared\Kernel\StrategyResolverInterface;
 use Spryker\Shared\ZedUi\ZedUiFactoryInterface;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Authenticator\MerchantLoginFormAuthenticator;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Badge\MultiFactorAuthBadge;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Builder\OptionsBuilder;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Builder\OptionsBuilderInterface;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Checker\LastVisitedPageUrlChecker;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Checker\LastVisitedPageUrlCheckerInterface;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\EventSubscriber\LastVisitedPageEventSubscriber;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Expander\SecurityBuilderExpander;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Expander\SecurityBuilderExpanderInterface;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Form\MerchantLoginForm;
@@ -25,8 +31,12 @@ use Spryker\Zed\SecurityMerchantPortalGui\Communication\Plugin\Security\Handler\
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Plugin\Security\Handler\MerchantUserAuthenticationSuccessHandler;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Plugin\Security\MerchantUserSecurityPlugin;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Plugin\Security\Provider\MerchantUserProvider;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Resolver\LastVisitedPageRedirectResolver;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Resolver\LastVisitedPageRedirectResolverInterface;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Security\MerchantUser;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Security\MerchantUserInterface;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Storage\LastVisitedPageCookieStorage;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Storage\LastVisitedPageStorageInterface;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Updater\SecurityTokenUpdater;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Updater\SecurityTokenUpdaterInterface;
 use Spryker\Zed\SecurityMerchantPortalGui\Dependency\Client\SecurityMerchantPortalGuiToSecurityBlockerClientInterface;
@@ -37,6 +47,7 @@ use Spryker\Zed\SecurityMerchantPortalGui\Dependency\Facade\SecurityMerchantPort
 use Spryker\Zed\SecurityMerchantPortalGui\Dependency\Facade\SecurityMerchantPortalGuiToSecurityFacadeInterface;
 use Spryker\Zed\SecurityMerchantPortalGui\SecurityMerchantPortalGuiConfig;
 use Spryker\Zed\SecurityMerchantPortalGui\SecurityMerchantPortalGuiDependencyProvider;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -217,5 +228,58 @@ class SecurityMerchantPortalGuiCommunicationFactory extends AbstractCommunicatio
     public function getZedUiFactory(): ZedUiFactoryInterface
     {
         return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::SERVICE_ZED_UI_FACTORY);
+    }
+
+    public function createLastVisitedPageEventSubscriber(): EventSubscriberInterface
+    {
+        return new LastVisitedPageEventSubscriber(
+            $this->createLastVisitedPageUrlChecker(),
+            $this->createLastVisitedPageStorageResolver()->get($this->getConfig()->getLastVisitedPageStorageType()),
+        );
+    }
+
+    public function createLastVisitedPageUrlChecker(): LastVisitedPageUrlCheckerInterface
+    {
+        return new LastVisitedPageUrlChecker(
+            $this->getSecurityFacade(),
+            $this->getHttpService(),
+        );
+    }
+
+    /**
+     * @return \Spryker\Shared\Kernel\StrategyResolverInterface<\Spryker\Zed\SecurityMerchantPortalGui\Communication\Storage\LastVisitedPageStorageInterface>
+     */
+    public function createLastVisitedPageStorageResolver(): StrategyResolverInterface
+    {
+        return new StrategyResolver(
+            [SecurityMerchantPortalGuiConfig::STORAGE_TYPE_COOKIE => $this->createLastVisitedPageCookieStorage()],
+            SecurityMerchantPortalGuiConfig::STORAGE_TYPE_COOKIE,
+        );
+    }
+
+    public function createLastVisitedPageCookieStorage(): LastVisitedPageStorageInterface
+    {
+        return new LastVisitedPageCookieStorage($this->getConfig());
+    }
+
+    public function getHttpService(): HttpServiceInterface
+    {
+        return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::SERVICE_HTTP);
+    }
+
+    public function createLastVisitedPageRedirectResolver(): LastVisitedPageRedirectResolverInterface
+    {
+        return new LastVisitedPageRedirectResolver(
+            $this->createLastVisitedPageStorageResolver()->get($this->getConfig()->getLastVisitedPageStorageType()),
+            $this->getHttpService(),
+        );
+    }
+
+    /**
+     * @return array<\Spryker\Zed\SecurityMerchantPortalGuiExtension\Dependency\Plugin\MerchantPortalUserRedirectStrategyPluginInterface>
+     */
+    public function getMerchantPortalUserRedirectStrategyPlugins(): array
+    {
+        return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::PLUGINS_MERCHANT_PORTAL_USER_REDIRECT_STRATEGY);
     }
 }
