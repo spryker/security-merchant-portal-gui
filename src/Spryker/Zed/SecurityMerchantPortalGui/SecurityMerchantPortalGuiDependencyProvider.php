@@ -92,6 +92,16 @@ class SecurityMerchantPortalGuiDependencyProvider extends AbstractBundleDependen
 
     public const string SERVICE_HTTP = 'SERVICE_HTTP';
 
+    public const string PLUGINS_MERCHANT_PORTAL_AUTHENTICATION_LINK = 'PLUGINS_MERCHANT_PORTAL_AUTHENTICATION_LINK';
+
+    public const string PLUGINS_OAUTH_MERCHANT_USER_CLIENT_STRATEGY = 'PLUGINS_OAUTH_MERCHANT_USER_CLIENT_STRATEGY';
+
+    public const string PLUGINS_OAUTH_MERCHANT_USER_AUTHENTICATION_STRATEGY = 'PLUGINS_OAUTH_MERCHANT_USER_AUTHENTICATION_STRATEGY';
+
+    public const string PLUGINS_OAUTH_MERCHANT_USER_POST_RESOLVE = 'PLUGINS_OAUTH_MERCHANT_USER_POST_RESOLVE';
+
+    public const string PLUGINS_OAUTH_MERCHANT_USER_RESTRICTION = 'PLUGINS_OAUTH_MERCHANT_USER_RESTRICTION';
+
     public function provideCommunicationLayerDependencies(Container $container): Container
     {
         $container = parent::provideCommunicationLayerDependencies($container);
@@ -110,6 +120,12 @@ class SecurityMerchantPortalGuiDependencyProvider extends AbstractBundleDependen
         $container = $this->addZedUiFactory($container);
         $container = $this->addMerchantPortalUserRedirectStrategyPlugins($container);
         $container = $this->addHttpService($container);
+        $container = $this->addMerchantPortalAuthenticationLinkPlugins($container);
+
+        $container = $this->addOauthMerchantUserClientStrategyPlugins($container);
+        $container = $this->addOauthMerchantUserAuthenticationStrategyPlugins($container);
+        $container = $this->addOauthMerchantUserPostResolvePlugins($container);
+        $container = $this->addOauthMerchantUserRestrictionPlugins($container);
 
         return $container;
     }
@@ -289,5 +305,90 @@ class SecurityMerchantPortalGuiDependencyProvider extends AbstractBundleDependen
         });
 
         return $container;
+    }
+
+    protected function addMerchantPortalAuthenticationLinkPlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_MERCHANT_PORTAL_AUTHENTICATION_LINK, function () {
+            return $this->getMerchantPortalAuthenticationLinkPlugins();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @return array<\Spryker\Zed\SecurityMerchantPortalGuiExtension\Dependency\Plugin\MerchantUserAuthenticationLinkPluginInterface>
+     */
+    protected function getMerchantPortalAuthenticationLinkPlugins(): array
+    {
+        return [];
+    }
+
+    protected function addOauthMerchantUserClientStrategyPlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_OAUTH_MERCHANT_USER_CLIENT_STRATEGY, function () {
+            return $this->getOauthMerchantUserClientStrategyPlugins();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @return array<\Spryker\Zed\SecurityMerchantPortalGuiExtension\Dependency\Plugin\OauthMerchantUserClientStrategyPluginInterface>
+     */
+    protected function getOauthMerchantUserClientStrategyPlugins(): array
+    {
+        return [];
+    }
+
+    protected function addOauthMerchantUserAuthenticationStrategyPlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_OAUTH_MERCHANT_USER_AUTHENTICATION_STRATEGY, function () {
+            return $this->getOauthMerchantUserAuthenticationStrategyPlugins();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @return array<\Spryker\Zed\SecurityMerchantPortalGuiExtension\Dependency\Plugin\OauthMerchantUserAuthenticationStrategyPluginInterface>
+     */
+    protected function getOauthMerchantUserAuthenticationStrategyPlugins(): array
+    {
+        return [];
+    }
+
+    protected function addOauthMerchantUserPostResolvePlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_OAUTH_MERCHANT_USER_POST_RESOLVE, function () {
+            return $this->getOauthMerchantUserPostResolvePlugins();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @return array<\Spryker\Zed\SecurityMerchantPortalGuiExtension\Dependency\Plugin\OauthMerchantUserPostResolvePluginInterface>
+     */
+    protected function getOauthMerchantUserPostResolvePlugins(): array
+    {
+        return [];
+    }
+
+    protected function addOauthMerchantUserRestrictionPlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_OAUTH_MERCHANT_USER_RESTRICTION, function () {
+            return $this->getOauthMerchantUserRestrictionPlugins();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @return array<\Spryker\Zed\SecurityMerchantPortalGuiExtension\Dependency\Plugin\OauthMerchantUserRestrictionPluginInterface>
+     */
+    protected function getOauthMerchantUserRestrictionPlugins(): array
+    {
+        return [];
     }
 }

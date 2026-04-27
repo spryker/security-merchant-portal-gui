@@ -22,4 +22,6 @@ interface SecurityMerchantPortalGuiToMerchantUserFacadeInterface
     public function isValidPasswordResetToken(string $token): bool;
 
     public function setNewPassword(string $token, string $password): bool;
+
+    public function setCurrentMerchantUser(MerchantUserTransfer $merchantUserTransfer): mixed;
 }

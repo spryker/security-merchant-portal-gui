@@ -1,0 +1,16 @@
+{# @var authenticationLinkCollection \Generated\Shared\Transfer\OauthAuthenticationLinkTransfer[] #}
+{# @var authenticationLink \Generated\Shared\Transfer\OauthAuthenticationLinkTransfer #}
+
+{% if authenticationLinkCollection is defined and authenticationLinkCollection is not empty %}
+    {% for authenticationLink in authenticationLinkCollection %}
+        {% if authenticationLink.template is not empty %}
+            {% include authenticationLink.template ignore missing with {'authenticationLink': authenticationLink} only %}
+        {% else %}
+            <div class="login__link">
+                <web-spy-button-link url="{{ authenticationLink.href }}" class="login__submit" target="{{ authenticationLink.target | escape('html_attr') }}">
+                    {{ authenticationLink.text | trans }}
+                </web-spy-button-link>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}

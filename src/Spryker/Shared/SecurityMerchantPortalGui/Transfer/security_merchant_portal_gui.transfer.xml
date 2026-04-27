@@ -77,4 +77,29 @@
         <property name="user" type="User"/>
     </transfer>
 
+    <transfer name="OauthMerchantUserRestrictionRequest" strict="true">
+        <property name="merchantUser" type="MerchantUser"/>
+    </transfer>
+
+    <transfer name="OauthMerchantUserRestrictionResponse" strict="true">
+        <property name="isRestricted" type="bool"/>
+        <property name="messages" type="Message[]" singular="message"/>
+    </transfer>
+
+    <transfer name="ResourceOwner">
+    </transfer>
+
+    <transfer name="ResourceOwnerRequest">
+    </transfer>
+
+    <transfer name="ResourceOwnerResponse">
+    </transfer>
+
+    <transfer name="OauthAuthenticationLink">
+        <property name="template" type="string"/>
+        <property name="href" type="string"/>
+        <property name="target" type="string"/>
+        <property name="text" type="string"/>
+    </transfer>
+
 </transfers>

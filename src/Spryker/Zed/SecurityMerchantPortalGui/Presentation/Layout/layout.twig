@@ -39,5 +39,11 @@
                 </web-spy-button-link>
             {% endif %}
         {% endblock %}
+
+        {% block ssoLinks %}
+            {% include '@SecurityMerchantPortalGui/Partial/authentication-links.twig' ignore missing with {
+                authenticationLinkCollection: authenticationLinkCollection
+            } %}
+        {% endblock %}
     </web-mp-login-layout>
 {% endblock %}

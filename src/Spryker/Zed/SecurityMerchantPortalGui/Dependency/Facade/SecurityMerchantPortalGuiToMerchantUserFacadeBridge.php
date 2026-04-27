@@ -50,4 +50,9 @@ class SecurityMerchantPortalGuiToMerchantUserFacadeBridge implements SecurityMer
     {
         return $this->merchantUserFacade->setNewPassword($token, $password);
     }
+
+    public function setCurrentMerchantUser(MerchantUserTransfer $merchantUserTransfer): mixed
+    {
+        return $this->merchantUserFacade->setCurrentMerchantUser($merchantUserTransfer);
+    }
 }

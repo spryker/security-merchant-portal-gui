@@ -27,10 +27,22 @@ use Spryker\Zed\SecurityMerchantPortalGui\Communication\Form\MerchantResetPasswo
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Form\MerchantResetPasswordRequestForm;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Logger\AuditLogger;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Logger\AuditLoggerInterface;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Oauth\Authenticator\OauthMerchantPortalTokenAuthenticator;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Oauth\Expander\OauthSecurityBuilderExpander;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Oauth\Expander\OauthSecurityBuilderExpanderInterface;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Oauth\Loader\OauthMerchantUserLoader;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Oauth\Loader\OauthMerchantUserLoaderInterface;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Oauth\Reader\ResourceOwnerReader;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Oauth\Reader\ResourceOwnerReaderInterface;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Oauth\Resolver\OauthMerchantUserResolver;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Oauth\Resolver\OauthMerchantUserResolverInterface;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Oauth\Security\Handler\OauthMerchantPortalAuthenticationFailureHandler;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Oauth\Security\Handler\OauthMerchantPortalAuthenticationSuccessHandler;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Plugin\Security\Handler\MerchantUserAuthenticationFailureHandler;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Plugin\Security\Handler\MerchantUserAuthenticationSuccessHandler;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Plugin\Security\MerchantUserSecurityPlugin;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Plugin\Security\Provider\MerchantUserProvider;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Plugin\Security\Provider\OauthMerchantUserProvider;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Resolver\LastVisitedPageRedirectResolver;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Resolver\LastVisitedPageRedirectResolverInterface;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Security\MerchantUser;
@@ -281,5 +293,107 @@ class SecurityMerchantPortalGuiCommunicationFactory extends AbstractCommunicatio
     public function getMerchantPortalUserRedirectStrategyPlugins(): array
     {
         return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::PLUGINS_MERCHANT_PORTAL_USER_REDIRECT_STRATEGY);
+    }
+
+    /**
+     * @return array<\Spryker\Zed\SecurityMerchantPortalGuiExtension\Dependency\Plugin\MerchantUserAuthenticationLinkPluginInterface>
+     */
+    public function getMerchantPortalAuthenticationLinkPlugins(): array
+    {
+        return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::PLUGINS_MERCHANT_PORTAL_AUTHENTICATION_LINK);
+    }
+
+    public function createOauthSecurityBuilderExpander(): OauthSecurityBuilderExpanderInterface
+    {
+        return new OauthSecurityBuilderExpander(
+            $this->createOauthMerchantUserProvider(),
+            $this->createOauthMerchantPortalTokenAuthenticator(),
+        );
+    }
+
+    public function createOauthMerchantPortalTokenAuthenticator(): OauthMerchantPortalTokenAuthenticator
+    {
+        return new OauthMerchantPortalTokenAuthenticator(
+            $this->createResourceOwnerReader(),
+            $this->createOauthMerchantPortalAuthenticationSuccessHandler(),
+            $this->createOauthMerchantPortalAuthenticationFailureHandler(),
+            $this->createOauthMerchantUserResolver(),
+            $this->getConfig(),
+            $this->getOauthMerchantUserRestrictionPlugins(),
+            $this->getMessengerFacade(),
+        );
+    }
+
+    public function createOauthMerchantUserProvider(): OauthMerchantUserProvider
+    {
+        return new OauthMerchantUserProvider();
+    }
+
+    public function createOauthMerchantUserLoader(): OauthMerchantUserLoaderInterface
+    {
+        return new OauthMerchantUserLoader(
+            $this->getMerchantUserFacade(),
+            $this->getOauthMerchantUserRestrictionPlugins(),
+            $this->getMessengerFacade(),
+        );
+    }
+
+    public function createResourceOwnerReader(): ResourceOwnerReaderInterface
+    {
+        return new ResourceOwnerReader($this->getOauthMerchantUserClientStrategyPlugins());
+    }
+
+    public function createOauthMerchantPortalAuthenticationSuccessHandler(): OauthMerchantPortalAuthenticationSuccessHandler
+    {
+        return new OauthMerchantPortalAuthenticationSuccessHandler(
+            $this->getMerchantUserFacade(),
+        );
+    }
+
+    public function createOauthMerchantPortalAuthenticationFailureHandler(): OauthMerchantPortalAuthenticationFailureHandler
+    {
+        return new OauthMerchantPortalAuthenticationFailureHandler(
+            $this->getMessengerFacade(),
+        );
+    }
+
+    /**
+     * @return array<\Spryker\Zed\SecurityMerchantPortalGuiExtension\Dependency\Plugin\OauthMerchantUserClientStrategyPluginInterface>
+     */
+    public function getOauthMerchantUserClientStrategyPlugins(): array
+    {
+        return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::PLUGINS_OAUTH_MERCHANT_USER_CLIENT_STRATEGY);
+    }
+
+    /**
+     * @return array<\Spryker\Zed\SecurityMerchantPortalGuiExtension\Dependency\Plugin\OauthMerchantUserAuthenticationStrategyPluginInterface>
+     */
+    public function getOauthMerchantUserAuthenticationStrategyPlugins(): array
+    {
+        return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::PLUGINS_OAUTH_MERCHANT_USER_AUTHENTICATION_STRATEGY);
+    }
+
+    /**
+     * @return array<\Spryker\Zed\SecurityMerchantPortalGuiExtension\Dependency\Plugin\OauthMerchantUserPostResolvePluginInterface>
+     */
+    public function getOauthMerchantUserPostResolvePlugins(): array
+    {
+        return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::PLUGINS_OAUTH_MERCHANT_USER_POST_RESOLVE);
+    }
+
+    /**
+     * @return array<\Spryker\Zed\SecurityMerchantPortalGuiExtension\Dependency\Plugin\OauthMerchantUserRestrictionPluginInterface>
+     */
+    public function getOauthMerchantUserRestrictionPlugins(): array
+    {
+        return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::PLUGINS_OAUTH_MERCHANT_USER_RESTRICTION);
+    }
+
+    public function createOauthMerchantUserResolver(): OauthMerchantUserResolverInterface
+    {
+        return new OauthMerchantUserResolver(
+            $this->getOauthMerchantUserAuthenticationStrategyPlugins(),
+            $this->getOauthMerchantUserPostResolvePlugins(),
+        );
     }
 }

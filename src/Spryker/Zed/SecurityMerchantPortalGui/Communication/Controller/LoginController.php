@@ -34,6 +34,21 @@ class LoginController extends AbstractController
                 ->createLoginForm()
                 ->handleRequest($request)
                 ->createView(),
+            'authenticationLinkCollection' => $this->executeAuthenticationLinkPlugins(),
         ]);
+    }
+
+    /**
+     * @return array<\Generated\Shared\Transfer\OauthAuthenticationLinkTransfer>
+     */
+    protected function executeAuthenticationLinkPlugins(): array
+    {
+        $authenticationLinks = [];
+
+        foreach ($this->getFactory()->getMerchantPortalAuthenticationLinkPlugins() as $merchantPortalAuthenticationLinkPlugin) {
+            $authenticationLinks = array_merge($authenticationLinks, $merchantPortalAuthenticationLinkPlugin->getAuthenticationLinks());
+        }
+
+        return $authenticationLinks;
     }
 }
