@@ -6,6 +6,7 @@
     "require": {
         "php": ">=8.3",
         "spryker/acl-merchant-portal-extension": "^1.0.0",
+        "spryker/container": "^1.1.0",
         "spryker/event-dispatcher-extension": "^1.0.0",
         "spryker/http": "^1.16.0",
         "spryker/kernel": "^3.33.0",
@@ -28,7 +29,6 @@
         "spryker/acl": "*",
         "spryker/application": "*",
         "spryker/code-sniffer": "*",
-        "spryker/container": "*",
         "spryker/customer": "*",
         "spryker/event-dispatcher": "*",
         "spryker/form": "*",
