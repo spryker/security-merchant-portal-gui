@@ -41,9 +41,11 @@
         {% endblock %}
 
         {% block ssoLinks %}
-            {% include '@SecurityMerchantPortalGui/Partial/authentication-links.twig' ignore missing with {
-                authenticationLinkCollection: authenticationLinkCollection
-            } %}
+            {% if authenticationLinkCollection is defined %}
+                {% include '@SecurityMerchantPortalGui/Partial/authentication-links.twig' ignore missing with {
+                    authenticationLinkCollection: authenticationLinkCollection
+                } %}
+            {% endif %}
         {% endblock %}
     </web-mp-login-layout>
 {% endblock %}
