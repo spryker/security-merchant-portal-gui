@@ -14,10 +14,15 @@ use Symfony\Component\HttpFoundation\Cookie;
 class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
 {
     /**
+     * @api
+     *
      * @var string
      */
     public const ROLE_MERCHANT_USER = 'ROLE_MERCHANT_USER';
 
+    /**
+     * @api
+     */
     public const string STORAGE_TYPE_COOKIE = 'cookie';
 
     protected const string LAST_VISITED_PAGE_COOKIE_NAME = 'last-visited-page';
