@@ -126,11 +126,11 @@ class MerchantLoginFormAuthenticator implements AuthenticatorInterface, Authenti
      */
     public function createToken(Passport $passport, string $firewallName): TokenInterface
     {
-        return new PostAuthenticationToken(
-            $passport->getUser(),
-            $firewallName,
-            $this->assertMerchantUserIsPreAuthenticated($passport) ? [static::ACCESS_MODE_PRE_AUTH] : $passport->getUser()->getRoles(),
-        );
+        if ($this->assertMerchantUserIsPreAuthenticated($passport)) {
+            return new PostAuthenticationToken($passport->getUser(), $firewallName, [static::ACCESS_MODE_PRE_AUTH]);
+        }
+
+        return new PostAuthenticationToken($passport->getUser(), $firewallName, $passport->getUser()->getRoles());
     }
 
     /**

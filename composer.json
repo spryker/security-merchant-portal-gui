@@ -11,7 +11,7 @@
         "spryker/http": "^1.16.0",
         "spryker/kernel": "^3.33.0",
         "spryker/log": "^3.17.0",
-        "spryker/merchant-user": "^1.0.0",
+        "spryker/merchant-user": "^1.9.2",
         "spryker/messenger": "^3.0.0",
         "spryker/multi-factor-auth-extension": "^1.1.0",
         "spryker/security": "^1.8.0",

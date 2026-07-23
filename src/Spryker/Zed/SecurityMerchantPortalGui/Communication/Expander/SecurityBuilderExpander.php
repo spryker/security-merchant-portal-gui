@@ -10,6 +10,7 @@ namespace Spryker\Zed\SecurityMerchantPortalGui\Communication\Expander;
 use Spryker\Service\Container\ContainerInterface;
 use Spryker\Shared\SecurityExtension\Configuration\SecurityBuilderInterface;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Builder\OptionsBuilderInterface;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Plugin\Security\Handler\AccessDeniedHandler;
 use Spryker\Zed\SecurityMerchantPortalGui\SecurityMerchantPortalGuiConfig;
 use Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface;
 
@@ -34,6 +35,8 @@ class SecurityBuilderExpander implements SecurityBuilderExpanderInterface
      * @var string
      */
     protected const SECURITY_MERCHANT_PORTAL_LOGIN_FORM_AUTHENTICATOR = 'security.MerchantUser.login_form.authenticator';
+
+    protected const string SERVICE_SECURITY_TOKEN_STORAGE = 'security.token_storage';
 
     /**
      * @var string
@@ -69,6 +72,7 @@ class SecurityBuilderExpander implements SecurityBuilderExpanderInterface
     {
         $securityBuilder = $this->addFirewalls($securityBuilder);
         $securityBuilder = $this->addAccessRules($securityBuilder);
+        $securityBuilder = $this->addAccessDeniedHandler($securityBuilder, $container);
         $this->addAuthenticator($container);
 
         return $securityBuilder;
@@ -98,6 +102,18 @@ class SecurityBuilderExpander implements SecurityBuilderExpanderInterface
                 static::ACCESS_MODE_PRE_AUTH,
             ],
         ]);
+    }
+
+    protected function addAccessDeniedHandler(SecurityBuilderInterface $securityBuilder, ContainerInterface $container): SecurityBuilderInterface
+    {
+        $securityBuilder->addAccessDeniedHandler(static::SECURITY_FIREWALL_NAME, function () use ($container) {
+            return new AccessDeniedHandler(
+                $container->get(static::SERVICE_SECURITY_TOKEN_STORAGE),
+                $this->config->getUrlLogin(),
+            );
+        });
+
+        return $securityBuilder;
     }
 
     protected function addAuthenticator(ContainerInterface $container): void

@@ -103,6 +103,12 @@ class MerchantUserProvider extends AbstractPlugin implements UserProviderInterfa
             throw $this->getUserNotFoundException();
         }
 
+        foreach ($this->merchantUserLoginRestrictionPlugins as $merchantUserLoginRestrictionPlugin) {
+            if ($merchantUserLoginRestrictionPlugin->isRestricted($merchantUserTransfer)) {
+                throw $this->getUserNotFoundException();
+            }
+        }
+
         return $this->getFactory()->createSecurityUser($merchantUserTransfer);
     }
 
