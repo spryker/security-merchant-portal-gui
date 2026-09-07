@@ -23,7 +23,6 @@ class SecurityMerchantPortalGuiToSessionClientBridge implements SecurityMerchant
     }
 
     /**
-     * @param string $name
      * @param mixed $value
      *
      * @return mixed
@@ -34,8 +33,6 @@ class SecurityMerchantPortalGuiToSessionClientBridge implements SecurityMerchant
     }
 
     /**
-     * @param string $name
-     *
      * @return mixed
      */
     public function remove(string $name)

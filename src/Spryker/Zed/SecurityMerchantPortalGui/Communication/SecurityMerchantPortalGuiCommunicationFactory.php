@@ -321,6 +321,7 @@ class SecurityMerchantPortalGuiCommunicationFactory extends AbstractCommunicatio
             $this->getConfig(),
             $this->getOauthMerchantUserRestrictionPlugins(),
             $this->getMessengerFacade(),
+            $this->createMultiFactorAuthBadge(),
         );
     }
 

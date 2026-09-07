@@ -52,8 +52,6 @@ class PasswordControllerTest extends Unit
     }
 
     /**
-     * @param string $expectedAuditLogMessage
-     *
      * @return \Spryker\Zed\SecurityMerchantPortalGui\Communication\Controller\PasswordController|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getPasswordControllerMock(string $expectedAuditLogMessage): PasswordController
@@ -77,8 +75,6 @@ class PasswordControllerTest extends Unit
     }
 
     /**
-     * @param string $expectedAuditLogMessage
-     *
      * @return \Spryker\Zed\SecurityMerchantPortalGui\Communication\SecurityMerchantPortalGuiCommunicationFactory|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getSecurityMerchantPortalGuiCommunicationFactoryMock(
@@ -119,8 +115,6 @@ class PasswordControllerTest extends Unit
     }
 
     /**
-     * @param string $expectedMessage
-     *
      * @return \Spryker\Zed\SecurityMerchantPortalGui\Communication\Logger\AuditLogger|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getAuditLoggerMock(string $expectedMessage): AuditLogger
@@ -136,8 +130,6 @@ class PasswordControllerTest extends Unit
     }
 
     /**
-     * @param string $expectedMessage
-     *
      * @return \Psr\Log\LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getLoggerMock(string $expectedMessage): LoggerInterface

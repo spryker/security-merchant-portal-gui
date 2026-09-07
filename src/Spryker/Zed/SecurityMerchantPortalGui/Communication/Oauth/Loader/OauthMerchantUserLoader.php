@@ -22,9 +22,7 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 class OauthMerchantUserLoader implements OauthMerchantUserLoaderInterface
 {
     /**
-     * @param \Spryker\Zed\SecurityMerchantPortalGui\Dependency\Facade\SecurityMerchantPortalGuiToMerchantUserFacadeInterface $merchantUserFacade
      * @param array<\Spryker\Zed\SecurityMerchantPortalGuiExtension\Dependency\Plugin\OauthMerchantUserRestrictionPluginInterface> $oauthMerchantPortalRestrictionPlugins
-     * @param \Spryker\Zed\SecurityMerchantPortalGui\Dependency\Facade\SecurityMerchantPortalGuiToMessengerFacadeInterface $messengerFacade
      */
     public function __construct(
         protected SecurityMerchantPortalGuiToMerchantUserFacadeInterface $merchantUserFacade,

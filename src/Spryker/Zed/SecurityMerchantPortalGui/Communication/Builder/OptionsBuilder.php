@@ -51,9 +51,6 @@ class OptionsBuilder implements OptionsBuilderInterface
      */
     protected const FORM_FIELD_CSRF_TOKEN = '_token';
 
-    /**
-     * @var \Symfony\Component\Security\Core\User\UserProviderInterface
-     */
     protected UserProviderInterface $userProvider;
 
     public function __construct(UserProviderInterface $userProvider)

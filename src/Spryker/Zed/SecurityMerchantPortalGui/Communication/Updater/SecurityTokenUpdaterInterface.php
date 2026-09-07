@@ -15,10 +15,6 @@ interface SecurityTokenUpdaterInterface
 
     /**
      * @deprecated Use {@link \Spryker\Zed\SecurityMerchantPortalGui\Communication\Updater\SecurityTokenUpdaterInterface::updateMerchantUserToken()} instead.
-     *
-     * @param \Generated\Shared\Transfer\MerchantUserTransfer $merchantUserTransfer
-     *
-     * @return \Generated\Shared\Transfer\MerchantUserTransfer
      */
     public function update(MerchantUserTransfer $merchantUserTransfer): MerchantUserTransfer;
 }

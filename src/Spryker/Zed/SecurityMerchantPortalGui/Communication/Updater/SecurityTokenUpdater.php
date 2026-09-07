@@ -30,14 +30,8 @@ class SecurityTokenUpdater implements SecurityTokenUpdaterInterface
      */
     protected const IS_IMPERSONATOR = 'IS_IMPERSONATOR';
 
-    /**
-     * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface
-     */
     protected TokenStorageInterface $tokenStorageService;
 
-    /**
-     * @var \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface
-     */
     protected AuthorizationCheckerInterface $authorizationChecker;
 
     public function __construct(TokenStorageInterface $tokenStorageService, AuthorizationCheckerInterface $authorizationChecker)
@@ -60,10 +54,6 @@ class SecurityTokenUpdater implements SecurityTokenUpdaterInterface
 
     /**
      * @deprecated Use {@link \Spryker\Zed\SecurityMerchantPortalGui\Communication\Updater\SecurityTokenUpdater::updateMerchantUserToken()} instead.
-     *
-     * @param \Generated\Shared\Transfer\MerchantUserTransfer $merchantUserTransfer
-     *
-     * @return \Generated\Shared\Transfer\MerchantUserTransfer
      */
     public function update(MerchantUserTransfer $merchantUserTransfer): MerchantUserTransfer
     {

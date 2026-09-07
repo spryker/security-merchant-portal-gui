@@ -30,6 +30,21 @@ class OauthMerchantPortalAuthenticationSuccessHandler implements AuthenticationS
      */
     protected const string SECURITY_FIREWALL_NAME = 'MerchantUser';
 
+    /**
+     * @uses \Spryker\Zed\SecurityMerchantPortalGui\Communication\Expander\SecurityBuilderExpander::ACCESS_MODE_PRE_AUTH
+     */
+    protected const string ACCESS_MODE_PRE_AUTH = 'ACCESS_MODE_PRE_AUTH';
+
+    /**
+     * @uses \Spryker\Zed\SecurityMerchantPortalGui\Communication\Plugin\Security\Handler\MerchantUserAuthenticationSuccessHandler::MULTI_FACTOR_AUTH_LOGIN_USER_EMAIL_SESSION_KEY
+     */
+    protected const string MULTI_FACTOR_AUTH_LOGIN_USER_EMAIL_SESSION_KEY = '_multi_factor_auth_login_user_email';
+
+    /**
+     * @uses \Spryker\Zed\MultiFactorAuthMerchantPortal\Communication\Controller\MerchantUserOauthMultiFactorAuthFlowController::getEnabledTypesAction()
+     */
+    protected const string ROUTE_MERCHANT_USER_OAUTH_MFA = '/multi-factor-auth-merchant-portal/merchant-user-oauth-multi-factor-auth-flow/get-enabled-types';
+
     public function __construct(
         protected SecurityMerchantPortalGuiToMerchantUserFacadeInterface $merchantUserFacade,
     ) {
@@ -39,6 +54,15 @@ class OauthMerchantPortalAuthenticationSuccessHandler implements AuthenticationS
     {
         /** @var \Spryker\Zed\SecurityMerchantPortalGui\Communication\Oauth\Security\SecurityOauthMerchantUserInterface $user */
         $user = $token->getUser();
+
+        if (in_array(static::ACCESS_MODE_PRE_AUTH, $token->getRoleNames(), true)) {
+            $request->getSession()->set(
+                static::MULTI_FACTOR_AUTH_LOGIN_USER_EMAIL_SESSION_KEY,
+                $user->getMerchantUserTransfer()->getUserOrFail()->getUsername(),
+            );
+
+            return new RedirectResponse(static::ROUTE_MERCHANT_USER_OAUTH_MFA);
+        }
 
         $this->merchantUserFacade->setCurrentMerchantUser($user->getMerchantUserTransfer());
 

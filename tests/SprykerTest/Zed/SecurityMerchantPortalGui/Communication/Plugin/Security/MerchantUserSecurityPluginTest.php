@@ -63,9 +63,6 @@ class MerchantUserSecurityPluginTest extends Unit
      */
     protected const MERCHANT_STATUS_WAITING_FOR_APPROVAL = 'waiting-for-approval';
 
-    /**
-     * @var \SprykerTest\Zed\SecurityMerchantPortalGui\SecurityMerchantPortalGuiCommunicationTester
-     */
     protected SecurityMerchantPortalGuiCommunicationTester $tester;
 
     protected function _before(): void

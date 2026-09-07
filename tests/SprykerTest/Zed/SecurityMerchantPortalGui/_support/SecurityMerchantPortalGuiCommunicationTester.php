@@ -44,8 +44,6 @@ class SecurityMerchantPortalGuiCommunicationTester extends Actor
 
     /**
      * @param array<string, callable> $params
-     *
-     * @return \Spryker\Zed\SecurityMerchantPortalGuiExtension\Dependency\Plugin\MerchantUserLoginRestrictionPluginInterface
      */
     public function createMerchantUserLoginRestrictionPluginMock(array $params): MerchantUserLoginRestrictionPluginInterface
     {

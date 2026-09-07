@@ -65,11 +65,7 @@ class MerchantLoginFormAuthenticator implements AuthenticatorInterface, Authenti
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
      * @throws \Symfony\Component\Security\Core\Exception\AuthenticationException
-     *
-     * @return \Symfony\Component\Security\Http\Authenticator\Passport\Passport
      */
     public function authenticate(Request $request): Passport
     {
@@ -118,11 +114,6 @@ class MerchantLoginFormAuthenticator implements AuthenticatorInterface, Authenti
      * This special role grants just enough access to complete the Multi-Factor Authentication verification
      * but prevents access to the rest of the application. Once Multi-Factor Authentication is successful,
      * a new token with the user's full roles will be created.
-     *
-     * @param \Symfony\Component\Security\Http\Authenticator\Passport\Passport $passport
-     * @param string $firewallName
-     *
-     * @return \Symfony\Component\Security\Core\Authentication\Token\TokenInterface
      */
     public function createToken(Passport $passport, string $firewallName): TokenInterface
     {
@@ -136,11 +127,6 @@ class MerchantLoginFormAuthenticator implements AuthenticatorInterface, Authenti
     /**
      * @deprecated since Symfony 5.4, use {@link createToken()} instead.
      * Method exists only for PHPStan due to its fatal errors during analyzing files.
-     *
-     * @param \Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface $passport
-     * @param string $firewallName
-     *
-     * @return \Symfony\Component\Security\Core\Authentication\Token\TokenInterface
      */
     public function createAuthenticatedToken(PassportInterface $passport, string $firewallName): TokenInterface /** @phpstan-ignore-line */
     {

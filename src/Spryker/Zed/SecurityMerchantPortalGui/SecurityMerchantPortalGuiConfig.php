@@ -85,8 +85,6 @@ class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
      * - It is disabled by default.
      *
      * @api
-     *
-     * @return bool
      */
     public function isMerchantPortalSecurityBlockerEnabled(): bool
     {
@@ -98,8 +96,6 @@ class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
      * - Returns the entity identifier that is used to block the password resets.
      *
      * @api
-     *
-     * @return string
      */
     public function getMerchantPortalSecurityBlockerEntityType(): string
     {
@@ -108,8 +104,6 @@ class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
 
     /**
      * @api
-     *
-     * @return string
      */
     public function getDefaultTargetPath(): string
     {
@@ -118,8 +112,6 @@ class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
 
     /**
      * @api
-     *
-     * @return string
      */
     public function getUrlLogin(): string
     {
@@ -131,8 +123,6 @@ class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
      * - Returns the minimum length for merchant user password.
      *
      * @api
-     *
-     * @return int
      */
     public function getMerchantUserPasswordMinLength(): int
     {
@@ -144,8 +134,6 @@ class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
      * - Returns the maximum length for merchant user password.
      *
      * @api
-     *
-     * @return int
      */
     public function getMerchantUserPasswordMaxLength(): int
     {
@@ -157,8 +145,6 @@ class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
      * - Returns the pattern for merchant user password validation.
      *
      * @api
-     *
-     * @return string
      */
     public function getMerchantUserPasswordPattern(): string
     {
@@ -170,8 +156,6 @@ class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
      * - Returns the message for merchant user password validation.
      *
      * @api
-     *
-     * @return string
      */
     public function getPasswordValidationMessage(): string
     {
@@ -183,8 +167,6 @@ class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
      * - Returns the ignorable security Merchant Portal path pattern.
      *
      * @api
-     *
-     * @return string
      */
     public function getIgnorablePathPattern(): string
     {
@@ -196,8 +178,6 @@ class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
      * - Returns the route pattern for the merchant portal.
      *
      * @api
-     *
-     * @return string
      */
     public function getMerchantPortalRoutePattern(): string
     {
@@ -209,8 +189,6 @@ class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
      * - Returns the cookie name used to store the last visited page URL.
      *
      * @api
-     *
-     * @return string
      */
     public function getLastVisitedPageCookieName(): string
     {
@@ -222,8 +200,6 @@ class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
      * - Returns the cookie path for the last visited page cookie.
      *
      * @api
-     *
-     * @return string
      */
     public function getLastVisitedPageCookiePath(): string
     {
@@ -235,8 +211,6 @@ class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
      * - Returns the last visited page storage type used to select the storage strategy.
      *
      * @api
-     *
-     * @return string
      */
     public function getLastVisitedPageStorageType(): string
     {
@@ -251,8 +225,6 @@ class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
      * @api
      *
      * @phpstan-return ''|'lax'|'none'|'strict'
-     *
-     * @return string
      */
     public function getLastVisitedPageCookieSameSite(): string
     {
@@ -265,8 +237,6 @@ class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
      * - Enabled by default to prevent transmission over plain HTTP connections.
      *
      * @api
-     *
-     * @return bool
      */
     public function isLastVisitedPageCookieSecure(): bool
     {
@@ -279,8 +249,6 @@ class SecurityMerchantPortalGuiConfig extends AbstractBundleConfig
      * - Returns 0 by default, which means the cookie expires when the browser session ends.
      *
      * @api
-     *
-     * @return int
      */
     public function getLastVisitedPageCookieExpires(): int
     {

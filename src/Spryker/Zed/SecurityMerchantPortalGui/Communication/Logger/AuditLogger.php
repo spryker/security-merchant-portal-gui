@@ -49,10 +49,7 @@ class AuditLogger implements AuditLoggerInterface
     }
 
     /**
-     * @param string $action
      * @param list<string> $tags
-     *
-     * @return void
      */
     protected function addAuditLog(string $action, array $tags): void
     {

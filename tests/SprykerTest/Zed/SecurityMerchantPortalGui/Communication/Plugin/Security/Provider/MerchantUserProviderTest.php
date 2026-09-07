@@ -42,9 +42,6 @@ class MerchantUserProviderTest extends Unit
      */
     protected const USER_STATUS_ACTIVE = 'active';
 
-    /**
-     * @var \SprykerTest\Zed\SecurityMerchantPortalGui\SecurityMerchantPortalGuiCommunicationTester
-     */
     protected SecurityMerchantPortalGuiCommunicationTester $tester;
 
     public function testLoadUserByUsernameThrowsExceptionWhenLoginIsRestrictedByMerchantUserLoginRestrictionPlugin(): void

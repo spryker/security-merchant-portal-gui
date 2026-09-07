@@ -43,19 +43,10 @@ class SecurityBuilderExpander implements SecurityBuilderExpanderInterface
      */
     protected const ACCESS_MODE_PRE_AUTH = 'ACCESS_MODE_PRE_AUTH';
 
-    /**
-     * @var \Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface
-     */
     protected AuthenticatorInterface $authenticator;
 
-    /**
-     * @var \Spryker\Zed\SecurityMerchantPortalGui\Communication\Builder\OptionsBuilderInterface
-     */
     protected OptionsBuilderInterface $optionsBuilder;
 
-    /**
-     * @var \Spryker\Zed\SecurityMerchantPortalGui\SecurityMerchantPortalGuiConfig
-     */
     protected SecurityMerchantPortalGuiConfig $config;
 
     public function __construct(

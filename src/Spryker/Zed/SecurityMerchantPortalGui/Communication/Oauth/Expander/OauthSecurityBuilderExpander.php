@@ -38,7 +38,17 @@ class OauthSecurityBuilderExpander implements OauthSecurityBuilderExpanderInterf
     // any MP access rule, so it is accessible without explicit PUBLIC_ACCESS configuration.
     protected const string OAUTH_MERCHANT_PORTAL_PATH_PATTERN = '^/security-merchant-portal-gui';
 
+    // Full-page Multi-Factor Authentication challenge shown after an OAuth (SSO) login when the merchant
+    // user has MFA enabled. Its URL is outside the MerchantUser firewall's base pattern, so we extend
+    // the firewall pattern to cover it and grant it the pre-auth access mode (nothing more).
+    protected const string OAUTH_MERCHANT_PORTAL_MULTI_FACTOR_AUTH_PATH_PATTERN = '^/multi-factor-auth-merchant-portal/merchant-user-oauth-multi-factor-auth-flow';
+
     protected const string ACCESS_MODE_PUBLIC = 'PUBLIC_ACCESS';
+
+    /**
+     * @uses \Spryker\Zed\SecurityMerchantPortalGui\Communication\Expander\SecurityBuilderExpander::ACCESS_MODE_PRE_AUTH
+     */
+    protected const string ACCESS_MODE_PRE_AUTH = 'ACCESS_MODE_PRE_AUTH';
 
     public function __construct(
         protected UserProviderInterface $userProvider,
@@ -130,7 +140,12 @@ class OauthSecurityBuilderExpander implements OauthSecurityBuilderExpanderInterf
 
     protected function buildExtendedFirewallPattern(string $existingPattern): string
     {
-        return sprintf('%s|%s', $existingPattern, static::OAUTH_MERCHANT_PORTAL_PATH_PATTERN);
+        return sprintf(
+            '%s|%s|%s',
+            $existingPattern,
+            static::OAUTH_MERCHANT_PORTAL_PATH_PATTERN,
+            static::OAUTH_MERCHANT_PORTAL_MULTI_FACTOR_AUTH_PATH_PATTERN,
+        );
     }
 
     protected function addAccessRules(SecurityBuilderInterface $securityBuilder): SecurityBuilderInterface
@@ -139,6 +154,10 @@ class OauthSecurityBuilderExpander implements OauthSecurityBuilderExpanderInterf
             [
                 static::OAUTH_MERCHANT_PORTAL_PATH_PATTERN,
                 static::ACCESS_MODE_PUBLIC,
+            ],
+            [
+                static::OAUTH_MERCHANT_PORTAL_MULTI_FACTOR_AUTH_PATH_PATTERN,
+                static::ACCESS_MODE_PRE_AUTH,
             ],
         ]);
     }
@@ -151,9 +170,6 @@ class OauthSecurityBuilderExpander implements OauthSecurityBuilderExpanderInterf
     }
 
     /**
-     * @param string $firewallName
-     * @param \Spryker\Shared\SecurityExtension\Configuration\SecurityBuilderInterface $securityBuilder
-     *
      * @return array<mixed>|null
      */
     protected function findFirewall(string $firewallName, SecurityBuilderInterface $securityBuilder): ?array

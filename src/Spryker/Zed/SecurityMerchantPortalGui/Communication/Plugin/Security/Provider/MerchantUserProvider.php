@@ -58,13 +58,9 @@ class MerchantUserProvider extends AbstractPlugin implements UserProviderInterfa
     }
 
     /**
-     * @param string $identifier
-     *
      * @throws \Spryker\Zed\SecurityMerchantPortalGui\Communication\Exception\AccessDeniedException
      * @throws \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
      * @throws \Symfony\Component\Security\Core\Exception\UserNotFoundException
-     *
-     * @return \Symfony\Component\Security\Core\User\UserInterface
      */
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
@@ -84,12 +80,8 @@ class MerchantUserProvider extends AbstractPlugin implements UserProviderInterfa
     }
 
     /**
-     * @param \Symfony\Component\Security\Core\User\UserInterface $user
-     *
      * @throws \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
      * @throws \Symfony\Component\Security\Core\Exception\UserNotFoundException
-     *
-     * @return \Symfony\Component\Security\Core\User\UserInterface
      */
     public function refreshUser(UserInterface $user): UserInterface
     {
@@ -142,8 +134,6 @@ class MerchantUserProvider extends AbstractPlugin implements UserProviderInterfa
 
     /**
      * @deprecated Shim for Symfony Security Core 5.x, to be removed when Symfony Security Core dependency becomes 6.x+.
-     *
-     * @return bool
      */
     protected function isSymfonyVersion5(): bool
     {

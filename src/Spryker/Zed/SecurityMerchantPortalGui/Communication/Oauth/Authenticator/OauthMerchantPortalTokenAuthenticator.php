@@ -12,6 +12,7 @@ namespace Spryker\Zed\SecurityMerchantPortalGui\Communication\Oauth\Authenticato
 use Generated\Shared\Transfer\MerchantUserTransfer;
 use Generated\Shared\Transfer\OauthMerchantUserRestrictionRequestTransfer;
 use Generated\Shared\Transfer\OauthMerchantUserRestrictionResponseTransfer;
+use Spryker\Zed\SecurityMerchantPortalGui\Communication\Badge\MultiFactorAuthBadge;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Oauth\Reader\ResourceOwnerReaderInterface;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Oauth\Resolver\OauthMerchantUserResolverInterface;
 use Spryker\Zed\SecurityMerchantPortalGui\Communication\Oauth\Security\SecurityOauthMerchantUser;
@@ -29,6 +30,7 @@ use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
+use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
 
 class OauthMerchantPortalTokenAuthenticator extends AbstractAuthenticator
 {
@@ -36,16 +38,22 @@ class OauthMerchantPortalTokenAuthenticator extends AbstractAuthenticator
 
     protected const string EXCEPTION_MESSAGE_NO_RESOURCE_OWNER = 'No OAuth resource owner could be resolved.';
 
+    protected const string EXCEPTION_MESSAGE_NO_MERCHANT_USER = 'Merchant user could not be resolved from the OAuth resource owner.';
+
+    /**
+     * @uses \Spryker\Zed\SecurityMerchantPortalGui\Communication\Expander\SecurityBuilderExpander::ACCESS_MODE_PRE_AUTH
+     */
+    protected const string ACCESS_MODE_PRE_AUTH = 'ACCESS_MODE_PRE_AUTH';
+
+    /**
+     * @uses \Spryker\Shared\MultiFactorAuth\MultiFactorAuthConstants::CODE_BLOCKED
+     */
+    protected const int CODE_BLOCKED = 1;
+
     protected const string ROUTE_NAME_OAUTH_MERCHANT_PORTAL_LOGIN = 'security-merchant-portal-gui:oauth-login';
 
     /**
-     * @param \Spryker\Zed\SecurityMerchantPortalGui\Communication\Oauth\Reader\ResourceOwnerReaderInterface $resourceOwnerReader
-     * @param \Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface $authenticationSuccessHandler
-     * @param \Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface $authenticationFailureHandler
-     * @param \Spryker\Zed\SecurityMerchantPortalGui\Communication\Oauth\Resolver\OauthMerchantUserResolverInterface $oauthMerchantUserResolver
-     * @param \Spryker\Zed\SecurityMerchantPortalGui\SecurityMerchantPortalGuiConfig $securityMerchantPortalGuiConfig
      * @param array<\Spryker\Zed\SecurityMerchantPortalGuiExtension\Dependency\Plugin\OauthMerchantUserRestrictionPluginInterface> $oauthMerchantPortalRestrictionPlugins
-     * @param \Spryker\Zed\SecurityMerchantPortalGui\Dependency\Facade\SecurityMerchantPortalGuiToMessengerFacadeInterface $messengerFacade
      */
     public function __construct(
         protected ResourceOwnerReaderInterface $resourceOwnerReader,
@@ -55,6 +63,7 @@ class OauthMerchantPortalTokenAuthenticator extends AbstractAuthenticator
         protected SecurityMerchantPortalGuiConfig $securityMerchantPortalGuiConfig,
         protected array $oauthMerchantPortalRestrictionPlugins,
         protected SecurityMerchantPortalGuiToMessengerFacadeInterface $messengerFacade,
+        protected MultiFactorAuthBadge $multiFactorAuthBadge,
     ) {
     }
 
@@ -74,22 +83,43 @@ class OauthMerchantPortalTokenAuthenticator extends AbstractAuthenticator
             throw new CustomUserMessageAuthenticationException(static::EXCEPTION_MESSAGE_NO_RESOURCE_OWNER);
         }
 
+        // The merchant user must be resolved eagerly (not lazily inside the UserBadge closure) so the
+        // Multi-Factor Authentication badge can be evaluated while building the passport, which in turn
+        // drives whether createToken() issues a pre-auth token.
+        $merchantUserTransfer = $this->oauthMerchantUserResolver->resolveOauthMerchantUserByResourceOwner($resourceOwnerTransfer);
+
+        if ($merchantUserTransfer === null) {
+            throw new CustomUserMessageAuthenticationException(static::EXCEPTION_MESSAGE_NO_MERCHANT_USER);
+        }
+
         return new SelfValidatingPassport(
-            new UserBadge($resourceOwnerTransfer->getEmailOrFail(), function () use ($resourceOwnerTransfer) {
-                $merchantUserTransfer = $this->oauthMerchantUserResolver->resolveOauthMerchantUserByResourceOwner($resourceOwnerTransfer);
-
-                if ($merchantUserTransfer === null) {
-                    return null;
-                }
-
+            new UserBadge($resourceOwnerTransfer->getEmailOrFail(), function () use ($merchantUserTransfer) {
                 return $this->createSecurityUserFromMerchantUserTransfer($merchantUserTransfer);
             }),
+            [$this->multiFactorAuthBadge->enable($merchantUserTransfer->getUserOrFail())],
         );
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         return $this->authenticationSuccessHandler->onAuthenticationSuccess($request, $token);
+    }
+
+    public function createToken(Passport $passport, string $firewallName): TokenInterface
+    {
+        if ($this->isMerchantUserPreAuthenticated($passport)) {
+            return new PostAuthenticationToken($passport->getUser(), $firewallName, [static::ACCESS_MODE_PRE_AUTH]);
+        }
+
+        return new PostAuthenticationToken($passport->getUser(), $firewallName, $passport->getUser()->getRoles());
+    }
+
+    protected function isMerchantUserPreAuthenticated(Passport $passport): bool
+    {
+        $multiFactorAuthBadge = $passport->getBadge(MultiFactorAuthBadge::class);
+
+        return $multiFactorAuthBadge !== null
+            && ($multiFactorAuthBadge->getIsRequired() === true || $multiFactorAuthBadge->getStatus() === static::CODE_BLOCKED);
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response

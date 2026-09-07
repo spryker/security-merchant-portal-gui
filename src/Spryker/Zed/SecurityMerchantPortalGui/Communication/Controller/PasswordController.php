@@ -100,8 +100,6 @@ class PasswordController extends AbstractController
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
      * @return array<string, mixed>
      */
     public function resetRequestAction(Request $request): array
@@ -154,8 +152,6 @@ class PasswordController extends AbstractController
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string, mixed>
      */
     public function resetAction(Request $request)

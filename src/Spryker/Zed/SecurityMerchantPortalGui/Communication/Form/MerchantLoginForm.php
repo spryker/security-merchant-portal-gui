@@ -59,8 +59,6 @@ class MerchantLoginForm extends AbstractType
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface<mixed> $builder
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

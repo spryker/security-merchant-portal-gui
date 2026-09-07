@@ -31,19 +31,10 @@ class MerchantUser implements MerchantUserInterface, PasswordAuthenticatedUserIn
      */
     protected const string LEGACY_PROTECTED_PROPERTY_PREFIX = "\0*\0";
 
-    /**
-     * @var \Generated\Shared\Transfer\MerchantUserTransfer
-     */
     protected MerchantUserTransfer $merchantUserTransfer;
 
-    /**
-     * @var string
-     */
     protected string $username;
 
-    /**
-     * @var string|null
-     */
     protected ?string $password;
 
     /**
@@ -54,7 +45,6 @@ class MerchantUser implements MerchantUserInterface, PasswordAuthenticatedUserIn
     protected ?string $stateHash = null;
 
     /**
-     * @param \Generated\Shared\Transfer\MerchantUserTransfer $merchantUserTransfer
      * @param array<string> $roles
      */
     public function __construct(MerchantUserTransfer $merchantUserTransfer, array $roles = [])

@@ -57,11 +57,6 @@ class MerchantUserAuthenticationSuccessHandler extends AbstractPlugin implements
      * 1. Multi-Factor Authentication Required: Has `ACCESS_MODE_PRE_AUTH` role → Store user in session, return JSON to open Multi-Factor Authentication modal.
      * 2. Standard Auth: No Multi-Factor Authentication required → Set current user, redirect based on Multi-Factor Authentication plugin availability.
      * 3. Multi-Factor Authentication Completed: Full access granted → Standard redirect to target URL
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Symfony\Component\Security\Core\Authentication\Token\TokenInterface $token
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): Response
     {
