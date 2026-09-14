@@ -53,8 +53,13 @@ class SecurityOauthMerchantUser implements SecurityOauthMerchantUserInterface
         return $this->username;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getUserIdentifier(): string
     {
+        assert($this->username !== '');
+
         return $this->username;
     }
 

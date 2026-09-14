@@ -81,8 +81,13 @@ class MerchantUser implements MerchantUserInterface, PasswordAuthenticatedUserIn
         return $this->password;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getUserIdentifier(): string
     {
+        assert($this->username !== '');
+
         return $this->username;
     }
 
