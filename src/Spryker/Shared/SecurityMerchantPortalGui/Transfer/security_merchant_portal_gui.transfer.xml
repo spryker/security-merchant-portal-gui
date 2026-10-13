@@ -15,6 +15,7 @@
     <transfer name="User">
         <property name="username" type="string"/>
         <property name="password" type="string"/>
+        <property name="status" type="string"/>
     </transfer>
 
     <transfer name="Message">
@@ -87,12 +88,15 @@
     </transfer>
 
     <transfer name="ResourceOwner">
+        <property name="email" type="string"/>
     </transfer>
 
     <transfer name="ResourceOwnerRequest">
     </transfer>
 
     <transfer name="ResourceOwnerResponse">
+        <property name="isSuccessful" type="bool"/>
+        <property name="resourceOwner" type="ResourceOwner"/>
     </transfer>
 
     <transfer name="OauthAuthenticationLink">
