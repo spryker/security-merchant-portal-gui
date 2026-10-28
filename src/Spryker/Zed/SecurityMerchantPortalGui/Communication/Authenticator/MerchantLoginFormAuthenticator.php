@@ -19,6 +19,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 use Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
@@ -42,6 +43,8 @@ class MerchantLoginFormAuthenticator implements AuthenticatorInterface, Authenti
      * @var string
      */
     protected const PASSWORD = 'password';
+
+    protected const string CSRF_TOKEN = '_token';
 
     /**
      * @var string
@@ -78,7 +81,10 @@ class MerchantLoginFormAuthenticator implements AuthenticatorInterface, Authenti
         } catch (AccessDeniedException $e) {
             throw new AuthenticationException();
         }
-        $badges = [$this->multiFactorAuthBadge->enable($user->getMerchantUserTransfer()->getUserOrFail())];
+        $badges = [
+            new CsrfTokenBadge(static::SECURITY_MERCHANT_PORTAL_GUI_REQUEST, $data[static::CSRF_TOKEN] ?? null),
+            $this->multiFactorAuthBadge->enable($user->getMerchantUserTransfer()->getUserOrFail()),
+        ];
 
         return new Passport(
             new UserBadge($data[static::USERNAME], function () use ($user) {

@@ -163,6 +163,48 @@ class ZedMerchantUserSecurityPluginTest extends Unit
         $this->assertNull($token);
     }
 
+    /**
+     * @dataProvider invalidCsrfTokenDataProvider
+     *
+     * @param array<string, string> $csrfTokenField
+     *
+     * @return void
+     */
+    public function testUserWithValidCredentialsAndInvalidCsrfTokenCanNotLogin(array $csrfTokenField): void
+    {
+        // Arrange
+        $container = $this->tester->getContainer();
+        $userTransfer = $this->haveApprovedMerchantUser();
+        $container->get(static::SERVICE_SESSION)->start();
+
+        // Act
+        $this->tester->getHttpKernelBrowser()->request(
+            'post',
+            '/security-merchant-portal-gui/login_check',
+            [
+                'security-merchant-portal-gui' => [
+                    'username' => $userTransfer->getUsername(),
+                    'password' => 'foo',
+                ] + $csrfTokenField,
+            ],
+        );
+
+        // Assert
+        $this->assertNull($container->get(static::SERVICE_SECURITY_TOKEN_STORAGE)->getToken());
+    }
+
+    /**
+     * @return array<string, array<array<string, string>>>
+     */
+    public function invalidCsrfTokenDataProvider(): array
+    {
+        return [
+            'missing token' => [[]],
+            'empty token' => [['_token' => '']],
+            'invalid token' => [['_token' => 'invalid-token']],
+        ];
+    }
+
     public function testNonActiveUserCanNotLogin(): void
     {
         // Arrange
@@ -239,6 +281,19 @@ class ZedMerchantUserSecurityPluginTest extends Unit
         // Assert
         $token = $container->get(static::SERVICE_SECURITY_TOKEN_STORAGE)->getToken();
         $this->assertNull($token);
+    }
+
+    protected function haveApprovedMerchantUser(): UserTransfer
+    {
+        $userTransfer = $this->tester->haveUser([
+            UserTransfer::PASSWORD => 'foo',
+        ]);
+        $merchantTransfer = $this->tester->haveMerchant([
+            MerchantTransfer::STATUS => static::MERCHANT_STATUS_APPROVED,
+        ]);
+        $this->tester->haveMerchantUser($merchantTransfer, $userTransfer);
+
+        return $userTransfer;
     }
 
     protected function tearDown(): void

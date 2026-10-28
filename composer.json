@@ -14,7 +14,7 @@
         "spryker/merchant-user": "^1.9.2",
         "spryker/messenger": "^3.0.0",
         "spryker/multi-factor-auth-extension": "^1.1.0",
-        "spryker/security": "^1.8.0",
+        "spryker/security": "^1.13.0",
         "spryker/security-blocker": "^1.0.0",
         "spryker/security-extension": "^1.0.0",
         "spryker/security-merchant-portal-gui-extension": "^1.5.0",
