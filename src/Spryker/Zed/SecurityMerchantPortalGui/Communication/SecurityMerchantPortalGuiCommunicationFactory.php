@@ -397,4 +397,12 @@ class SecurityMerchantPortalGuiCommunicationFactory extends AbstractCommunicatio
             $this->getOauthMerchantUserPostResolvePlugins(),
         );
     }
+
+    /**
+     * @return list<\Spryker\Zed\SecurityMerchantPortalGuiExtension\Dependency\Plugin\MerchantPortalLoginFormExpanderPluginInterface>
+     */
+    public function getMerchantPortalLoginFormExpanderPlugins(): array
+    {
+        return $this->getProvidedDependency(SecurityMerchantPortalGuiDependencyProvider::PLUGINS_MERCHANT_PORTAL_LOGIN_FORM_EXPANDER);
+    }
 }

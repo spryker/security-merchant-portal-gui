@@ -167,8 +167,6 @@ class ZedMerchantUserSecurityPluginTest extends Unit
      * @dataProvider invalidCsrfTokenDataProvider
      *
      * @param array<string, string> $csrfTokenField
-     *
-     * @return void
      */
     public function testUserWithValidCredentialsAndInvalidCsrfTokenCanNotLogin(array $csrfTokenField): void
     {

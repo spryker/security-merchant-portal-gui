@@ -65,8 +65,11 @@ class MerchantLoginForm extends AbstractType
         $builder->setAction('/security-merchant-portal-gui/login_check');
 
         $this->addUserNameField($builder)
-            ->addPasswordField($builder)
-            ->addLoginButton($builder);
+            ->addPasswordField($builder);
+
+        $this->executeMerchantPortalLoginFormExpanderPlugins($builder, $options);
+
+        $this->addLoginButton($builder);
     }
 
     /**
@@ -131,6 +134,21 @@ class MerchantLoginForm extends AbstractType
         ]);
 
         return $this;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface<mixed> $builder
+     * @param array<string, mixed> $options
+     *
+     * @return \Symfony\Component\Form\FormBuilderInterface<mixed>
+     */
+    protected function executeMerchantPortalLoginFormExpanderPlugins(FormBuilderInterface $builder, array $options): FormBuilderInterface
+    {
+        foreach ($this->getFactory()->getMerchantPortalLoginFormExpanderPlugins() as $merchantPortalLoginFormExpanderPlugin) {
+            $builder = $merchantPortalLoginFormExpanderPlugin->expand($builder, $options);
+        }
+
+        return $builder;
     }
 
     public function getBlockPrefix(): string

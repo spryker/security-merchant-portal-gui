@@ -11,10 +11,14 @@
 
     {{ form_row(form.username) }}
     {{ form_row(form.password) }}
+    {% if form.captcha is defined %}
+        <div class="ant-form-item">{{ form_widget(form.captcha) }}</div>
+    {% endif %}
     {{ form_row(form.login, {attr: {class: submitButtonClass}}) }}
 
     {% include '@MultiFactorAuthMerchantPortal/Partials/mp-mfa-handler.twig' ignore missing with {
         formSelector: "form[name=#{form.vars.name}]",
         url: form.vars.action,
+        isLogin: true,
     } %}
 {% endblock %}

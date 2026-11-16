@@ -102,6 +102,8 @@ class SecurityMerchantPortalGuiDependencyProvider extends AbstractBundleDependen
 
     public const string PLUGINS_OAUTH_MERCHANT_USER_RESTRICTION = 'PLUGINS_OAUTH_MERCHANT_USER_RESTRICTION';
 
+    public const string PLUGINS_MERCHANT_PORTAL_LOGIN_FORM_EXPANDER = 'PLUGINS_MERCHANT_PORTAL_LOGIN_FORM_EXPANDER';
+
     public function provideCommunicationLayerDependencies(Container $container): Container
     {
         $container = parent::provideCommunicationLayerDependencies($container);
@@ -126,6 +128,7 @@ class SecurityMerchantPortalGuiDependencyProvider extends AbstractBundleDependen
         $container = $this->addOauthMerchantUserAuthenticationStrategyPlugins($container);
         $container = $this->addOauthMerchantUserPostResolvePlugins($container);
         $container = $this->addOauthMerchantUserRestrictionPlugins($container);
+        $container = $this->addMerchantPortalLoginFormExpanderPlugins($container);
 
         return $container;
     }
@@ -388,6 +391,23 @@ class SecurityMerchantPortalGuiDependencyProvider extends AbstractBundleDependen
      * @return array<\Spryker\Zed\SecurityMerchantPortalGuiExtension\Dependency\Plugin\OauthMerchantUserRestrictionPluginInterface>
      */
     protected function getOauthMerchantUserRestrictionPlugins(): array
+    {
+        return [];
+    }
+
+    protected function addMerchantPortalLoginFormExpanderPlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_MERCHANT_PORTAL_LOGIN_FORM_EXPANDER, function () {
+            return $this->getMerchantPortalLoginFormExpanderPlugins();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @return list<\Spryker\Zed\SecurityMerchantPortalGuiExtension\Dependency\Plugin\MerchantPortalLoginFormExpanderPluginInterface>
+     */
+    protected function getMerchantPortalLoginFormExpanderPlugins(): array
     {
         return [];
     }
